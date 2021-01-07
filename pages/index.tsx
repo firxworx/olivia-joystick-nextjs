@@ -10,7 +10,7 @@ const JoystickBuddy: React.FC<{}> = () => {
 
   const requestRef = useRef<number>(undefined)
 
-  const speak = useSpeech(() => undefined)
+  const speak = useSpeech()
 
   let haveEvents: boolean = false
   if (typeof window !== 'undefined') {
@@ -123,22 +123,9 @@ const JoystickBuddy: React.FC<{}> = () => {
 
   return (
     <div>
-      <h1 className={styles.title}>GAMEPAD!</h1>
-      {Object.keys(gamepads).map((id) => (
-        <div key={id}>
-          <h2>{gamepads[id].id}</h2>
-          {gamepads[id].axes && gamepads[id].axes.map((axis, index: number) => (
-            <div key={index}>
-              <h3>{index}</h3>
-              <pre>
-                {JSON.stringify(axis, null, 2)}
-              </pre>
-            </div>
-          ))}
-        </div>
-      ))}
-      <h1 className={styles.title}>DIRECTIONS</h1>
+      <h1 className={styles.title}>CONTROLLER</h1>
       <div className={styles.box}>
+        {BUTTON && <h1>BEEP</h1>}
         <h1>{UP}</h1>
         <h1>{DOWN}</h1>
         <h1>{RIGHT}</h1>
