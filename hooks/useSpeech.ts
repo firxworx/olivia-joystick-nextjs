@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback } from 'react'
 
 // cross-browser get array of speech synthesis voices
 function getVoices() {
@@ -38,24 +38,23 @@ async function chooseVoice() {
   })
 }
 
-export const useSpeech = () => { // @todo - implement an onEnd callback? onEnd: () => void
-  const [ voice, setVoice ] = useState<SpeechSynthesisVoice>(null)
+export const useSpeech = () => {
+  const voiceRef = useRef<SpeechSynthesisVoice>(null)
 
   useEffect(() => {
+    const setVoiceRef = async () => {
+      voiceRef.current = await chooseVoice()
+    }
+  
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      chooseVoice().then((voice) => {
-        setVoice(voice)
-      })
+      setVoiceRef()
     } else {
       console.warn('text-to-speech not supported')
     }
-
-    // const vv = async () => voiceRef.current = await chooseVoice() // maybe use a ref?
-    // vv()
   }, [])
   
   const speak = useCallback((phrase: string) => {
-    if (!voice) {
+    if (!voiceRef.current) {
       return
     }
 
@@ -63,11 +62,11 @@ export const useSpeech = () => { // @todo - implement an onEnd callback? onEnd: 
       window.speechSynthesis.cancel()
     }
 
-    // create a new instance each time or else ff won't repeat
+    // create a new instance each time or else firefox won't repeat
     const utterance = new SpeechSynthesisUtterance(phrase)
-    utterance.voice = voice
+    utterance.voice = voiceRef.current
     window.speechSynthesis.speak(utterance)
-  }, [ voice ])
+  }, [])
 
   return speak
 }
