@@ -2,11 +2,15 @@ import React, { useEffect, useCallback, useState, useRef } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useInterval } from '../hooks/useInterval'
+// import SpeechButton from '../components/SpeechButton'
+import { useSpeech } from '../hooks/useSpeech'
 
 const JoystickBuddy: React.FC<{}> = () => {
   const [ gamepads, setGamepads ] = useState({})
 
   const requestRef = useRef<number>(undefined)
+
+  const speak = useSpeech(() => undefined)
 
   let haveEvents: boolean = false
   if (typeof window !== 'undefined') {
@@ -82,6 +86,41 @@ const JoystickBuddy: React.FC<{}> = () => {
     }
   }, [])
 
+  // button
+  const BUTTON = (gamepads[0] && gamepads[0].buttons[0] && gamepads[0].buttons[0].pressed)
+
+  /*
+  // red handle
+  const UP = gamepads[0] && gamepads[0].axes[0] > 0.5 && 'UP'
+  const DOWN = gamepads[0] && gamepads[0].axes[0] < -0.5 && 'DOWN'
+  const RIGHT = gamepads[0] && gamepads[0].axes[1] > 0.5 && 'RIGHT'
+  const LEFT = gamepads[0] && gamepads[0].axes[1] < -0.5 && 'LEFT'
+  */
+
+  // blue handle
+  const RIGHT = gamepads[0] && gamepads[0].axes[0] > 0.5 && 'RIGHT'
+  const LEFT = gamepads[0] && gamepads[0].axes[0] < -0.5 && 'LEFT'
+  const DOWN = gamepads[0] && gamepads[0].axes[1] > 0.5 && 'DOWN'
+  const UP = gamepads[0] && gamepads[0].axes[1] < -0.5 && 'UP'
+
+  useEffect(() => {
+    if (RIGHT) {
+      speak('RIGHT')
+    }
+    if (LEFT) {
+      speak('LEFT')
+    }
+    if (UP) {
+      speak('UP')
+    }
+    if (DOWN) {
+      speak('DOWN')
+    }
+    if (BUTTON) {
+      speak('BEEP')
+    }
+  }, [ BUTTON, RIGHT, LEFT, DOWN, UP ])
+
   return (
     <div>
       <h1 className={styles.title}>GAMEPAD!</h1>
@@ -100,10 +139,10 @@ const JoystickBuddy: React.FC<{}> = () => {
       ))}
       <h1 className={styles.title}>DIRECTIONS</h1>
       <div className={styles.box}>
-        <h1>{gamepads[0] && gamepads[0].axes[0] > 0.5 && 'UP'}</h1>
-        <div>{gamepads[0] && gamepads[0].axes[0] < -0.5 && 'DOWN'}</div>
-        <div>{gamepads[0] && gamepads[0].axes[1] > 0.5 && 'RIGHT'}</div>
-        <div>{gamepads[0] && gamepads[0].axes[1] < -0.5 && 'LEFT'}</div>
+        <h1>{UP}</h1>
+        <h1>{DOWN}</h1>
+        <h1>{RIGHT}</h1>
+        <h1>{LEFT}</h1>
       </div>
     </div>
   )
@@ -118,6 +157,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <div>
+          {/* <SpeechButton say="hello world">Hello World</SpeechButton> */}
+        </div>
         <div>
           <JoystickBuddy />
         </div>
