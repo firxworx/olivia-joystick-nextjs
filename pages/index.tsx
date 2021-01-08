@@ -2,7 +2,6 @@ import React, { useEffect, useCallback, useState, useRef } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { useInterval } from '../hooks/useInterval'
-// import SpeechButton from '../components/SpeechButton'
 import { useSpeech } from '../hooks/useSpeech'
 
 const JoystickBuddy: React.FC<{}> = () => {
@@ -29,7 +28,7 @@ const JoystickBuddy: React.FC<{}> = () => {
     })
   }, [])
 
-  const scanGamepads = () => {
+  const scanGamepads = useCallback(() => {
     // gamepads from api (may also want to check for webkitGetGamepads if getGamepads DNE)
     const detectedGamepads = navigator.getGamepads
       ? navigator.getGamepads()
@@ -41,16 +40,16 @@ const JoystickBuddy: React.FC<{}> = () => {
         addGamepad(detectedGamepads[i])
       }
     }
-  }
+  }, [])
 
   // update each gamepad's status on each 'tick'
-  const animate = (time: DOMHighResTimeStamp) => {
+  const animate = useCallback((time: DOMHighResTimeStamp) => {
     if (!haveEvents) {
       scanGamepads()
     }
 
     requestRef.current = requestAnimationFrame(animate)
-  }
+  }, [])
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate)
@@ -144,9 +143,6 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div>
-          {/* <SpeechButton say="hello world">Hello World</SpeechButton> */}
-        </div>
         <div>
           <JoystickBuddy />
         </div>
