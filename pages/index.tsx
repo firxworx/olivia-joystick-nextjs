@@ -1,25 +1,63 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-// import { useSpeech } from '../hooks/useSpeech'
-import { useJoystick } from '../hooks/useJoystick'
-import { JoystickBuddy } from '../components/JoystickBuddy'
+import { useSpeech } from '../hooks/useSpeech'
+import { Joystick, useJoystick } from '../hooks/useJoystick'
+// import { JoystickBuddy } from '../components/JoystickBuddy'
 
 const JoystickHookTester: React.FC<{}> = () => {
-  // const speak = useSpeech()
-  const { UP, DOWN, LEFT, RIGHT, BUTTON } = useJoystick()
+  const [ joystick, setJoystick ] = useState<Joystick>({
+    button: false,
+    up: false,
+    down: false,
+    left: false,
+    right: false,
+  })
 
-  console.log('endless re-renders')
+  const speak = useSpeech()
+
+  const handleJoystickChange = useCallback((status: Joystick) => {
+    // console.log(status)
+    setJoystick({ ...status })
+  }, [])
+
+  useJoystick(handleJoystickChange)
+
+  const { button, up, down, left, right } = joystick
+
+  useEffect(() => {
+    if (button) {
+      speak('beep')
+    }
+
+    if (up) {
+      speak('up')
+    }
+
+    if (down) {
+      speak('down')
+    }
+
+    if (left) {
+      speak('left')
+    }
+
+    if (right) {
+      speak('right')
+    }
+  }, [ button, up, down, left, right ])
+
+  console.log('component rendering')
 
   return (
     <div>
       <h1 className={styles.title}>CONTROLLER</h1>
       <div className={styles.box}>
-        {BUTTON && <h1>BEEP</h1>}
-        <h1>{UP && 'UP'}</h1>
-        <h1>{DOWN && 'DOWN'}</h1>
-        <h1>{RIGHT && 'RIGHT'}</h1>
-        <h1>{LEFT && 'LEFT'}</h1>
+        {button && <h1>BEEP</h1>}
+        <h1>{up && 'UP'}</h1>
+        <h1>{down && 'DOWN'}</h1>
+        <h1>{right && 'RIGHT'}</h1>
+        <h1>{left && 'LEFT'}</h1>
       </div>
     </div>
   )
