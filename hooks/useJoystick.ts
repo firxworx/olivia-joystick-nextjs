@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react'
+import { useRef, useCallback, useEffect } from 'react'
 import { useInterval } from './useInterval'
 // import equal from 'fast-deep-equal/es6'
 
@@ -6,10 +6,18 @@ import { useInterval } from './useInterval'
 interface GamepadRef {
   [key: number]: Gamepad;
 }
-*/
 
 interface Gamepads {
   [key: number]: Pick<Gamepad, 'id' | 'buttons' | 'axes'>;
+}
+*/
+
+export interface Joystick {
+  button: boolean;
+  up: boolean;
+  down: boolean;
+  left: boolean;
+  right: boolean;
 }
 
 let haveEvents: boolean = false
@@ -17,24 +25,21 @@ if (typeof window !== 'undefined') {
   haveEvents = 'ongamepadconnected' in window
 }
 
-interface Joystick {
-  UP: boolean;
-  DOWN: boolean;
-  LEFT: boolean;
-  RIGHT: boolean;
-  BUTTON: boolean;
-}
-
-export const useJoystick = () => {
+export const useJoystick = (onJoystickChange: (status: Joystick) => void) => {
   // const gamepadRef = useRef<GamepadRef>(undefined)
-  const [ joystick, setJoystick ] = useState<Joystick>({
-    UP: false, DOWN: false, LEFT: false, RIGHT: false, BUTTON: false,
+  const joystickRef = useRef<Joystick>({
+    button: false,
+    up: false,
+    down: false,
+    left: false,
+    right: false,
   })
+
   const requestRef = useRef<number>(undefined)
 
   const addGamepad = useCallback((gamepad: Gamepad) => {
+    // ref approach w/ multiple controllers
     /*
-    // ref approach?
     gamepadRef.current = {
       ...gamepadRef.current,
       [gamepad.index]: gamepad,
@@ -43,29 +48,33 @@ export const useJoystick = () => {
 
     const { index, id, buttons: [ btn0 ], axes: [axis0, axis1 ] } = gamepad
 
-    const UP = (axis1 < -0.5)
-    const DOWN = (axis1 > 0.5)
-    const LEFT = (axis0 < -0.5)
-    const RIGHT = (axis0 > 0.5)
-    const BUTTON = (btn0 && btn0.pressed)
-
-    if (joystick.UP === UP && joystick.DOWN === DOWN && joystick.LEFT === LEFT && joystick.RIGHT === RIGHT && joystick.BUTTON === BUTTON) {
-      return
+    const latest: Joystick = {
+      button: (btn0 && btn0.pressed),
+      up: (axis1 < -0.5),
+      down: (axis1 > 0.5),
+      left: (axis0 < -0.5),
+      right: (axis0 > 0.5),
     }
 
-    setJoystick({
-      UP,
-      DOWN,
-      LEFT,
-      RIGHT,
-      BUTTON
-    })
+    const { button, up, down, left, right } = joystickRef.current
+
+    if (latest.button !== button || latest.up !== up || latest.down !== down || latest.left !== left || latest.right !== right) {
+      joystickRef.current = {
+        button: latest.button,
+        up: latest.up,
+        down: latest.down,
+        left: latest.left,
+        right: latest.right,
+      }
+
+      onJoystickChange(joystickRef.current)
+    }
   }, [])
 
   const scanGamepads = useCallback(() => {
-    // gamepads from api (may also want to check for webkitGetGamepads if getGamepads DNE)
     const joystick = navigator.getGamepads()
 
+    // assume single controller for current purposes
     if (joystick.length && joystick[0]) {
       addGamepad(joystick[0])
     }
@@ -113,21 +122,4 @@ export const useJoystick = () => {
       window.removeEventListener('gamepadconnected', handleDisconnected)
     }
   }, [])
-
-  /*
-  // console.log(gamepadRef && gamepadRef.current)
-
-  const BUTTON = (gamepads && gamepads[0] && gamepads[0].buttons[0] && gamepads[0].buttons[0].pressed)
-
-  const UP = (gamepads && gamepads[0] && gamepads[0].axes[1] < -0.5)
-  const DOWN = (gamepads && gamepads[0] && gamepads[0].axes[1] > 0.5)
-  const LEFT = (gamepads && gamepads[0] && gamepads[0].axes[0] < -0.5)
-  const RIGHT = (gamepads && gamepads[0] && gamepads[0].axes[0] > 0.5)
-
-  const buh = useMemo(() => [ UP, DOWN, LEFT, RIGHT, BUTTON ], [ UP, DOWN, LEFT, RIGHT, BUTTON ])
-
-  return buh
-  */
-
-  return joystick
 }
