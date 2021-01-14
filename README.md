@@ -2,7 +2,7 @@
 
 This repo contains the foundation of an interactive browser-based UI built with React + TypeScript that accepts input from a Generic USB Joystick via the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API).
 
-The goal of this project is to enable a non-verbal child with severe physical disabilities (due to cerebral palsy) and various cognitive impairments (related to a genetic disorder) to interact with a computer for the first time. The idea is to introduce the interface by enabling the user to "change the channel" between favourite TV shows and play varius sounds.
+The goal of this project is to enable a non-verbal child with severe physical disabilities (due to cerebral palsy) and various cognitive impairments (related to a genetic disorder) to interact with a computer for the first time. The idea is to introduce the interface by enabling the user to "change the channel" between favourite TV shows and play various sounds.
 
 If successful, more sophisticated interactions will be implemented that are tailored to the child's abilities, ideally enabling a basic level of communication with caregivers.
 
@@ -26,7 +26,7 @@ The USB controller registers itself as `Generic USB Joystick (Vendor: 0079 Produ
 
 All of the hardware components used in this project can be easily sourced from Amazon, AliExpress, and similar sites. Options include kits that include one or two joysticks plus all necessary buttons, controllers, and wiring with pre-installed connectors. Arcade-style cases and panels are also available if you do not wish to build your own solution to mount the hardware.
 
-Current plans are to mount a small arcade-style panel on an adjustable stand + mount that supports positioning the joystick within the child's limited range-of-motion. The concept is to leverage drum/percussion hardware for this task because it is infinitely positionable and customizable. It is also suitable for reasons of portability, ruggedness, and affordability vs. accessibility products.
+Current plans are to mount a small arcade-style panel on an adjustable stand + mount that supports positioning the joystick within the child's limited range-of-motion. The concept is to leverage drum/percussion hardware for this task because it is infinitely positionable and customizable. It is also suitable for reasons of portability, ruggedness, and affordability vs. niche accessibility products.
 
 The "brain" of the project is an Intel-powered [UP Board](https://up-board.org/) SBC (Single Board Computer) that I inherited from a past client project. I was working on the development of a next-generation vending kiosk with a large touch screen and my client ultimately selected a more powerful board, leaving me with this spare. The UP Board is relatively powerful, affordable, and is powered by a 5V supply. It features HDMI output and 4x USB ports that can support the joystick and a USB soundcard.
 
