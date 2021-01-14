@@ -1,86 +1,59 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { useSpeech } from '../hooks/useSpeech'
-import { Joystick, useJoystick } from '../hooks/useJoystick'
-// import { JoystickBuddy } from '../components/JoystickBuddy'
+import { GridLayout } from '../components/GridLayout'
+import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
 
-const JoystickHookTester: React.FC<{}> = () => {
-  const [ joystick, setJoystick ] = useState<Joystick>({
-    button: false,
-    up: false,
-    down: false,
-    left: false,
-    right: false,
-  })
+const screens = [
+  <div><h1>OLIVIA</h1><h2>IZZY</h2></div>,
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+]
 
-  const speak = useSpeech()
+export default function Home() {
+  // const [ userInteracted, setUserInteracted ] = useState(false)
 
-  const handleJoystickChange = useCallback((status: Joystick) => {
-    // console.log(status)
-    setJoystick({ ...status })
+  const [ currentScreen, setCurrentScreen ] = useState(0)
+  const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
+
+  const handleNext = () => {
+    setCurrentScreen((currentScreen + 1) % screens.length)
+  }
+
+  const handleBack = () => {
+    setCurrentScreen((currentScreen - 1 + screens.length) % screens.length)
+  }
+
+  const handleJoystickChange = useCallback((js: Joystick) => {
+    setJoystick({ ...js })
   }, [])
 
   useJoystick(handleJoystickChange)
 
-  const { button, up, down, left, right } = joystick
-
   useEffect(() => {
-    if (button) {
-      speak('beep')
+    if (joystick.up) {
+      handleNext()
     }
 
-    if (up) {
-      speak('up')
+    if (joystick.down) {
+      handleBack()
     }
-
-    if (down) {
-      speak('down')
-    }
-
-    if (left) {
-      speak('left')
-    }
-
-    if (right) {
-      speak('right')
-    }
-  }, [ button, up, down, left, right ])
-
-  console.log('component rendering')
+  }, [ joystick.button, joystick.up, joystick.down, joystick.left, joystick.right ])
 
   return (
-    <div>
-      <h1 className={styles.title}>CONTROLLER</h1>
-      <div className={styles.box}>
-        {button && <h1>BEEP</h1>}
-        <h1>{up && 'UP'}</h1>
-        <h1>{down && 'DOWN'}</h1>
-        <h1>{right && 'RIGHT'}</h1>
-        <h1>{left && 'LEFT'}</h1>
-      </div>
-    </div>
-  )
-}
-
-export default function Home() {
-  return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Joystick Playground</title>
+        <title>Olivia Joystick</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <div>
-          <JoystickHookTester />
-          {/* <JoystickBuddy /> */}
+      <GridLayout>
+        <div className={styles.screen}>
+          <h1>{screens[currentScreen]}</h1>
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        w00t
-      </footer>
-    </div>
+      </GridLayout>
+    </>
   )
 }

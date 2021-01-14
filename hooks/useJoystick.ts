@@ -1,16 +1,10 @@
 import { useRef, useCallback, useEffect } from 'react'
 import { useInterval } from './useInterval'
-// import equal from 'fast-deep-equal/es6'
 
-/*
-interface GamepadRef {
-  [key: number]: Gamepad;
+let haveEvents: boolean = false
+if (typeof window !== 'undefined') {
+  haveEvents = 'ongamepadconnected' in window
 }
-
-interface Gamepads {
-  [key: number]: Pick<Gamepad, 'id' | 'buttons' | 'axes'>;
-}
-*/
 
 export interface Joystick {
   button: boolean;
@@ -20,31 +14,25 @@ export interface Joystick {
   right: boolean;
 }
 
-let haveEvents: boolean = false
-if (typeof window !== 'undefined') {
-  haveEvents = 'ongamepadconnected' in window
+export const initialJoystickState: Joystick = {
+  button: false,
+  up: false,
+  down: false,
+  left: false,
+  right: false,
 }
 
 export const useJoystick = (onJoystickChange: (status: Joystick) => void) => {
-  // const gamepadRef = useRef<GamepadRef>(undefined)
-  const joystickRef = useRef<Joystick>({
-    button: false,
-    up: false,
-    down: false,
-    left: false,
-    right: false,
-  })
+  const joystickRef = useRef<Joystick>(initialJoystickState)
 
   const requestRef = useRef<number>(undefined)
 
   const addGamepad = useCallback((gamepad: Gamepad) => {
-    // ref approach w/ multiple controllers
-    /*
-    gamepadRef.current = {
-      ...gamepadRef.current,
-      [gamepad.index]: gamepad,
-    }
-    */
+    // concept for multiple controllers --
+    // gamepadRef.current = {
+    //  ...gamepadRef.current,
+    //  [gamepad.index]: gamepad,
+    // }
 
     const { index, id, buttons: [ btn0 ], axes: [axis0, axis1 ] } = gamepad
 
@@ -95,7 +83,7 @@ export const useJoystick = (onJoystickChange: (status: Joystick) => void) => {
     return () => cancelAnimationFrame(requestRef.current)
   }, [])
 
-  // check for new gamepads regularly
+  // check for new gamepads on a regular interval
   useInterval(() => {
     if (!haveEvents) {
       scanGamepads()
@@ -103,14 +91,12 @@ export const useJoystick = (onJoystickChange: (status: Joystick) => void) => {
   }, 1000)
 
   const handleConnected = useCallback((event: GamepadEvent) => {
-    console.log('A gamepad connected:')
-    console.log(event)
+    console.log('A gamepad connected:', event)
     addGamepad(event.gamepad)
   }, [])
 
   const handleDisconnected = useCallback((event: GamepadEvent) => {
-    console.log('A gamepad disconnected:')
-    console.log(event)
+    console.log('A gamepad disconnected:', event)
   }, [])
 
   useEffect(() => {

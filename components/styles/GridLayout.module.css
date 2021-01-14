@@ -1,0 +1,10 @@
+.GridLayout {
+  display: grid;
+  border: 2px solid red;
+  background: #ccc;
+  grid-template-columns: repeat(1, 1fr); /* repeat(3, 1fr); */
+  grid-template-rows: repeat(1, 1fr); /* repeat(3, 1fr); */
+  grid-gap: 1rem;
+  width: 100vw;
+  min-height: calc(100vh - 2px);
+}

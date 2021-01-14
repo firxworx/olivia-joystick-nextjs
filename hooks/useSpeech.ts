@@ -21,7 +21,7 @@ function getVoices() {
 // choose iOS voice samantha or win10 voice zira if available, otherwise default to first en-US voice
 async function chooseVoice() {
   const voices = (await getVoices()).filter(voice => voice.lang === 'en-US')
-  
+
   const samantha = voices.filter(voice => voice.name === 'Samantha')
   const zira = voices.filter(voice => voice.name === 'Microsoft Zira Desktop - English (United States)')
 
@@ -45,14 +45,14 @@ export const useSpeech = () => {
     const setVoiceRef = async () => {
       voiceRef.current = await chooseVoice()
     }
-  
+
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       setVoiceRef()
     } else {
       console.warn('text-to-speech not supported')
     }
   }, [])
-  
+
   const speak = useCallback((phrase: string) => {
     if (!voiceRef.current) {
       return
