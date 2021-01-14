@@ -3,14 +3,13 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { GridLayout } from '../components/GridLayout'
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
+import ReactPlayer from 'react-player/youtube'
 
 const screens = [
-  <div><h1>OLIVIA</h1><h2>IZZY</h2></div>,
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
+  <ReactPlayer url="https://www.youtube.com/watch?v=T53yDxrnLMY" playing={true} />,
+  <ReactPlayer url="https://www.youtube.com/watch?v=N9h2sg-PGRk" playing={true} />,
+  <ReactPlayer url="https://www.youtube.com/watch?v=jCvSEuHms5M" playing={true} />,
+  <ReactPlayer url="https://www.youtube.com/watch?v=fJxLNvhce2w" playing={true} />,
 ]
 
 export default function Home() {
