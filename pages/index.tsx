@@ -6,14 +6,23 @@ import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystic
 import ReactPlayer from 'react-player/youtube'
 
 const screens = [
-  <ReactPlayer url="https://www.youtube.com/watch?v=T53yDxrnLMY" playing={true} />,
-  <ReactPlayer url="https://www.youtube.com/watch?v=N9h2sg-PGRk" playing={true} />,
-  <ReactPlayer url="https://www.youtube.com/watch?v=jCvSEuHms5M" playing={true} />,
-  <ReactPlayer url="https://www.youtube.com/watch?v=fJxLNvhce2w" playing={true} />,
+  'https://www.youtube.com/watch?v=W0G3qZbwmq8',
+  'https://www.youtube.com/watch?v=RHNlAA2uV0o',
+  'https://www.youtube.com/watch?v=ud_gLdgJJAQ',
+  'https://www.youtube.com/watch?v=0w4QiOwOgDU',
+  'https://www.youtube.com/watch?v=62fXe5PE7Sk',
+  'https://www.youtube.com/watch?v=OPeOmgede_U',
+  /*
+  'https://www.youtube.com/watch?v=T53yDxrnLMY',
+  'https://www.youtube.com/watch?v=N9h2sg-PGRk',
+  'https://www.youtube.com/watch?v=jCvSEuHms5M',
+  'https://www.youtube.com/watch?v=fJxLNvhce2w',
+  */
 ]
 
 export default function Home() {
   // const [ userInteracted, setUserInteracted ] = useState(false)
+  const [ isPlaying, setIsPlaying ] = useState(true)
 
   const [ currentScreen, setCurrentScreen ] = useState(0)
   const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
@@ -33,6 +42,10 @@ export default function Home() {
   useJoystick(handleJoystickChange)
 
   useEffect(() => {
+    if (joystick.button) {
+      setIsPlaying(!isPlaying)
+    }
+
     if (joystick.up) {
       handleNext()
     }
@@ -50,7 +63,12 @@ export default function Home() {
       </Head>
       <GridLayout>
         <div className={styles.screen}>
-          <h1>{screens[currentScreen]}</h1>
+          <ReactPlayer
+            url={screens[currentScreen]}
+            playing={isPlaying}
+            width="100%"
+            height="100%"
+          />
         </div>
       </GridLayout>
     </>
