@@ -33,7 +33,7 @@ const haveWindow = typeof window === 'object'
 export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => void) => {
   const keyboardRef = useRef<KeyboardNavigation>(initialKeyboardNavigationState)
 
-  const upHandler = useCallback(({ key }) => {
+  const upHandler = useCallback(({ key }: KeyboardEvent) => {
     if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' || key === ' ' || key === 'Spacebar') {
       keyboardRef.current = {
         ...keyboardRef.current,
@@ -44,7 +44,7 @@ export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => vo
     }
   }, [])
 
-  const downHandler = useCallback(({ key }) => {
+  const downHandler = useCallback(({ key }: KeyboardEvent) => {
     if  (key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' || key === ' ' || key === 'Spacebar') {
       keyboardRef.current = {
         ...keyboardRef.current,

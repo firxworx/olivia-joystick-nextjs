@@ -25,7 +25,7 @@ export const initialJoystickState: Joystick = {
 export const useJoystick = (onJoystickChange: (status: Joystick) => void) => {
   const joystickRef = useRef<Joystick>(initialJoystickState)
 
-  const requestRef = useRef<number>(undefined)
+  const requestRef = useRef<number | null>(null)
 
   const addGamepad = useCallback((gamepad: Gamepad) => {
     // concept for multiple controllers --
@@ -80,7 +80,11 @@ export const useJoystick = (onJoystickChange: (status: Joystick) => void) => {
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate)
 
-    return () => cancelAnimationFrame(requestRef.current)
+    return () => {
+      if (requestRef.current !== null) {
+        cancelAnimationFrame(requestRef.current)
+      }
+    }
   }, [])
 
   // check for new gamepads on a regular interval

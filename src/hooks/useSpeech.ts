@@ -39,7 +39,7 @@ async function chooseVoice() {
 }
 
 export const useSpeech = () => {
-  const voiceRef = useRef<SpeechSynthesisVoice>(null)
+  const voiceRef = useRef<SpeechSynthesisVoice | null>(null)
 
   useEffect(() => {
     const setVoiceRef = async () => {
