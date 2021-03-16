@@ -1,6 +1,4 @@
 import React, { useState, useCallback } from 'react'
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import { GridLayout } from '../components/GridLayout'
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
 
@@ -32,20 +30,11 @@ export default function Home() {
   }
 
   return (
-    <>
-      <Head>
-        <title>Olivia Joystick</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <GridLayout>
-        {/*
-        <h2>{`${screens[currentScreen]} ... ${screenProgress[currentScreen]}`}</h2>
-        */}
-        <div className={styles.screen}>
-          <TelevisionMode joystick={combinedControl} />
-          {/*<SpeechMode joystick={joystick} /> */}
-        </div>
-      </GridLayout>
-    </>
+    <GridLayout>
+      <div className="flex justify-center items-center">
+        <TelevisionMode joystick={combinedControl} />
+        {/*<SpeechMode joystick={joystick} /> */}
+      </div>
+    </GridLayout>
   )
 }
