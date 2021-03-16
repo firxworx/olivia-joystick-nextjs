@@ -26,6 +26,10 @@ const keyNameDict = {
   'ArrowDown': 'down',
   'ArrowLeft': 'left',
   'ArrowRight': 'right',
+  'W': 'up',
+  'S': 'down',
+  'A': 'left',
+  'D': 'right',
 }
 
 const haveWindow = typeof window === 'object'
@@ -33,8 +37,17 @@ const haveWindow = typeof window === 'object'
 export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => void) => {
   const keyboardRef = useRef<KeyboardNavigation>(initialKeyboardNavigationState)
 
-  const upHandler = useCallback(({ key }: KeyboardEvent) => {
-    if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' || key === ' ' || key === 'Spacebar') {
+  const keyupHandler = useCallback((event: KeyboardEvent) => {
+    const { key } = event
+    // console.log(key)
+
+    if (
+      key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' ||
+      key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
+      key === ' ' || key === 'Spacebar'
+    ) {
+      event.stopPropagation()
+
       keyboardRef.current = {
         ...keyboardRef.current,
         [keyNameDict[key]]: false,
@@ -44,8 +57,21 @@ export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => vo
     }
   }, [])
 
-  const downHandler = useCallback(({ key }: KeyboardEvent) => {
-    if  (key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' || key === ' ' || key === 'Spacebar') {
+  const keydownHandler = useCallback((event: KeyboardEvent) => {
+    const { key } = event
+    // console.log(key)
+
+    if  (
+      key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' ||
+      key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
+      key === ' ' || key === 'Spacebar'
+    ) {
+      event.stopPropagation()
+
+      if (event.repeat) {
+        return
+      }
+
       keyboardRef.current = {
         ...keyboardRef.current,
         [keyNameDict[key]]: true,
@@ -55,17 +81,25 @@ export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => vo
     }
   }, [])
 
+  /*
+  const keypressHandler = (event: KeyboardEvent) => {
+    event.stopPropagation()
+  }
+  */
+
   useEffect(() => {
     if (!haveWindow) {
       return
     }
 
-    window.addEventListener('keydown', downHandler)
-    window.addEventListener('keyup', upHandler)
+    window.addEventListener('keydown', keydownHandler)
+    window.addEventListener('keyup', keyupHandler)
+    // window.addEventListener('keypress', keypressHandler)
 
     return () => {
-      window.removeEventListener('keydown', downHandler)
-      window.removeEventListener('keyup', upHandler)
+      window.removeEventListener('keydown', keydownHandler)
+      window.removeEventListener('keyup', keyupHandler)
+      // window.removeEventListener('keypress', keypressHandler)
     }
-  }, [ downHandler, upHandler ])
+  }, [ keydownHandler, keyupHandler ])
 }
