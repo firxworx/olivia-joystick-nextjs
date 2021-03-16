@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ReactPlayer from 'react-player/youtube'
 
-import { useJoystick, Joystick, initialJoystickState } from '../../hooks/useJoystick'
+import { Joystick } from '../../hooks/useJoystick'
 
 const screens = [
-  'https://www.youtube.com/watch?v=QZ_ecRti0F0', // dora - wonderland full movie
   'https://www.youtube.com/watch?v=bPjua3v4Psw', // dora - star mountain
   'https://www.youtube.com/watch?v=Edr6_-L3bi4', // scooby doo - Scaredy Cats Scooby & Shaggy
+  'https://www.youtube.com/watch?v=HlhMayx8f7c', // curious george - curious george discovers the poles
+  'https://www.youtube.com/watch?v=hRTcdBJsQXE', // masha - furry friends
+  'https://www.youtube.com/watch?v=L50l3xJlyXQ', // dora - start catcher
+  'https://www.youtube.com/watch?v=Ik_QP4oA_Hg', // curious george - maple monkey madness
 ]
 
 export const TelevisionMode: React.FC<{ joystick: Joystick }> = ({ joystick }) => {

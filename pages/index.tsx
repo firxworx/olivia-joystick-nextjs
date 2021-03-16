@@ -5,6 +5,7 @@ import { GridLayout } from '../components/GridLayout'
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
 
 import { TelevisionMode } from '../components/modes/TelevisionMode'
+import { SpeechMode } from '../components/modes/SpeechMode'
 // import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
 
 export default function Home() {
@@ -36,6 +37,7 @@ export default function Home() {
         */}
         <div className={styles.screen}>
           <TelevisionMode joystick={joystick} />
+          {/*<SpeechMode joystick={joystick} /> */}
         </div>
       </GridLayout>
     </>
