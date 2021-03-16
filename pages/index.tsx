@@ -6,24 +6,30 @@ import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystic
 
 import { TelevisionMode } from '../components/modes/TelevisionMode'
 import { SpeechMode } from '../components/modes/SpeechMode'
-// import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
+import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
 
 export default function Home() {
   const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
-  // const [ keyboard, setKeyboard ] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
+  const [ keyboard, setKeyboard ] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
 
   const handleJoystickChange = useCallback((joystickState: Joystick) => {
     setJoystick({ ...joystickState })
   }, [])
 
-  /*
   const handleKeyboardChange = useCallback((keyboardState: KeyboardNavigation) => {
     setKeyboard({ ...keyboardState })
   }, [])
-  */
 
   useJoystick(handleJoystickChange)
-  // useKeyboard(handleKeyboardChange)
+  useKeyboard(handleKeyboardChange)
+
+  const combinedControl: Joystick = {
+    up: joystick.up || keyboard.up,
+    down: joystick.down || keyboard.down,
+    left: joystick.left || keyboard.left,
+    right: joystick.right || keyboard.right,
+    button: joystick.button || keyboard.space,
+  }
 
   return (
     <>
@@ -36,7 +42,7 @@ export default function Home() {
         <h2>{`${screens[currentScreen]} ... ${screenProgress[currentScreen]}`}</h2>
         */}
         <div className={styles.screen}>
-          <TelevisionMode joystick={joystick} />
+          <TelevisionMode joystick={combinedControl} />
           {/*<SpeechMode joystick={joystick} /> */}
         </div>
       </GridLayout>
