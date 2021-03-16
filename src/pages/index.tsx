@@ -7,6 +7,8 @@ import { SpeechMode } from '../components/modes/SpeechMode'
 import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
 
 export default function Home() {
+  const [ currentMode, setCurrentMode ] = useState(0)
+
   const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
   const [ keyboard, setKeyboard ] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
 
@@ -29,10 +31,27 @@ export default function Home() {
     button: joystick.button || keyboard.space,
   }
 
+  // @todo refactor
+  const modes = [
+    SpeechMode,
+    TelevisionMode,
+  ].map((CurrentMode, index) =>
+    <CurrentMode key={index} joystick={combinedControl} />
+  )
+
+  const handleNextMode = () => {
+    setCurrentMode((currentMode + 1) % modes.length)
+  }
+
+  const handlePreviousMode = () => {
+    setCurrentMode((currentMode - 1 + modes.length) % modes.length)
+  }
+
   return (
     <GridLayout>
       <div className="flex justify-center items-center">
-        <TelevisionMode joystick={combinedControl} />
+        {modes[currentMode]}
+        {/*<TelevisionMode joystick={combinedControl} />*/}
         {/*<SpeechMode joystick={joystick} /> */}
       </div>
     </GridLayout>

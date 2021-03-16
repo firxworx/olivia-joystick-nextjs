@@ -1,8 +1,9 @@
-import styles from './styles/GridLayout.module.css'
 
 export const GridLayout: React.FC<{}> = ({ children }) => {
+  // remember to consider header + footer, e.g. grid-cols-3 + grid-rows-3
+
   return (
-    <main className={styles.GridLayout}>
+    <main className="grid grid-cols-1 grid-rows-1 min-h-screen min-w-max bg-gray-500">
       {children}
     </main>
   )
