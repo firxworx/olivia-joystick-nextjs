@@ -1,47 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import { GridLayout } from '../components/GridLayout'
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
 
-const screens = [
-  <div><h1>OLIVIA</h1><h2>IZZY</h2></div>,
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-]
+import { TelevisionMode } from '../components/modes/TelevisionMode'
+import { SpeechMode } from '../components/modes/SpeechMode'
+import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
 
 export default function Home() {
-  // const [ userInteracted, setUserInteracted ] = useState(false)
-
-  const [ currentScreen, setCurrentScreen ] = useState(0)
   const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
+  const [ keyboard, setKeyboard ] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
 
-  const handleNext = () => {
-    setCurrentScreen((currentScreen + 1) % screens.length)
-  }
+  const handleJoystickChange = useCallback((joystickState: Joystick) => {
+    setJoystick({ ...joystickState })
+  }, [])
 
-  const handleBack = () => {
-    setCurrentScreen((currentScreen - 1 + screens.length) % screens.length)
-  }
-
-  const handleJoystickChange = useCallback((js: Joystick) => {
-    setJoystick({ ...js })
+  const handleKeyboardChange = useCallback((keyboardState: KeyboardNavigation) => {
+    setKeyboard({ ...keyboardState })
   }, [])
 
   useJoystick(handleJoystickChange)
+  useKeyboard(handleKeyboardChange)
 
-  useEffect(() => {
-    if (joystick.up) {
-      handleNext()
-    }
-
-    if (joystick.down) {
-      handleBack()
-    }
-  }, [ joystick.button, joystick.up, joystick.down, joystick.left, joystick.right ])
+  const combinedControl: Joystick = {
+    up: joystick.up || keyboard.up,
+    down: joystick.down || keyboard.down,
+    left: joystick.left || keyboard.left,
+    right: joystick.right || keyboard.right,
+    button: joystick.button || keyboard.space,
+  }
 
   return (
     <>
@@ -50,8 +38,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <GridLayout>
+        {/*
+        <h2>{`${screens[currentScreen]} ... ${screenProgress[currentScreen]}`}</h2>
+        */}
         <div className={styles.screen}>
-          <h1>{screens[currentScreen]}</h1>
+          <TelevisionMode joystick={combinedControl} />
+          {/*<SpeechMode joystick={joystick} /> */}
         </div>
       </GridLayout>
     </>
