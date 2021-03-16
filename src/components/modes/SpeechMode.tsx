@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { useState, useEffect } from 'react'
 
 import { Joystick } from '../../hooks/useJoystick'
@@ -48,15 +49,17 @@ export const SpeechMode: React.FC<{ joystick: Joystick }> = ({ joystick }) => {
     <div className={styles.container}>
       <div className={styles.boxes}>
         {phrases.map((phrase, index) => (
-          <div key="phrase">
-            {currentPhrase === index
-              ? (
-                <div className={`${styles.box} ${styles.selected}`}><strong>{phrase}</strong></div>
-              )
-              : (
-                <div className={`${styles.box} ${styles.unselected}`}>{phrase}</div>
-              )
-            }
+          <div key={phrase}>
+              <div
+                className={clsx(
+                  'border-0 border-gray800',
+                  {
+                    ['font-bold']: currentPhrase === index,
+                  }
+                )}
+              >
+                {phrase}
+              </div>
           </div>
         ))}
       </div>
