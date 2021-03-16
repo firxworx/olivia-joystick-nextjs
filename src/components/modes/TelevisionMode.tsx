@@ -12,7 +12,7 @@ const screens = [
   'https://www.youtube.com/watch?v=Ik_QP4oA_Hg', // curious george - maple monkey madness
 ]
 
-export const TelevisionMode: React.FC<{ joystick: Joystick }> = ({ joystick }) => {
+export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: string) => void }> = ({ joystick, speak }) => {
   // const [ userInteracted, setUserInteracted ] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
 
