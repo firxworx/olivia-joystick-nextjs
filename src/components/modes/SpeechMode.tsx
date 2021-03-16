@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React, { useState, useEffect } from 'react'
 
 import { Joystick } from '../../hooks/useJoystick'
-import { useSpeech } from '../../hooks/useSpeech'
+// import { useSpeech } from '../../hooks/useSpeech'
 
 import styles from '../styles/SpeechMode.module.css'
 
@@ -16,10 +16,13 @@ const phrases = [
   'I want to watch TV',
 ]
 
-export const SpeechMode: React.FC<{ joystick: Joystick }> = ({ joystick }) => {
+export const SpeechMode: React.FC<{
+  joystick: Joystick,
+  speak: (phrase: string) => void,
+}> = ({ joystick, speak }) => {
   const [ currentPhrase, setCurrentPhrase ] = useState(0)
 
-  const speak = useSpeech()
+  // const speak = useSpeech()
 
   const handleNext = () => {
     setCurrentPhrase((currentPhrase + 1) % phrases.length)
@@ -30,6 +33,7 @@ export const SpeechMode: React.FC<{ joystick: Joystick }> = ({ joystick }) => {
   }
 
   useEffect(() => {
+    console.log(`speechmode joystick ${JSON.stringify(joystick, null, 2)}`)
     if (joystick.button) {
       speak(phrases[currentPhrase])
     }
@@ -43,7 +47,7 @@ export const SpeechMode: React.FC<{ joystick: Joystick }> = ({ joystick }) => {
     }
   }, [ joystick.button, joystick.up, joystick.down ])
 
-  console.log(`current phrase ${currentPhrase} [${phrases.join(', ')}]`)
+  // console.log(`current phrase ${currentPhrase} [${phrases.join(', ')}]`)
 
   return (
     <div className={styles.container}>
