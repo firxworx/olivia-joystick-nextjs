@@ -8,7 +8,7 @@ import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from 
 import { useSpeech } from '../hooks/useSpeech'
 
 const modes = [
-  { name: 'Television', component: TelevisionMode },
+  { name: 'Television Mode', component: TelevisionMode },
   { name: 'Speech Mode', component: SpeechMode },
 ]
 
@@ -72,13 +72,12 @@ export default function Home() {
   console.log(`current mode ${currentMode}`)
   const CurrentMode = modes[currentMode].component
 
+  // <TelevisionMode joystick={combinedControl} />
+  // <SpeechMode joystick={joystick} />
+
   return (
     <GridLayout>
-      <div className="flex justify-center items-center">
-        <CurrentMode joystick={combinedControl} speak={speak} />
-        {/*<TelevisionMode joystick={combinedControl} />*/}
-        {/*<SpeechMode joystick={joystick} /> */}
-      </div>
+      <CurrentMode joystick={combinedControl} speak={speak} />
     </GridLayout>
   )
 }

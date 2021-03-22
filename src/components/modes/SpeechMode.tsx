@@ -2,18 +2,16 @@ import clsx from 'clsx'
 import React, { useState, useEffect } from 'react'
 
 import { Joystick } from '../../hooks/useJoystick'
-// import { useSpeech } from '../../hooks/useSpeech'
+import { VectorIcon } from '../VectorIcon'
 
-import styles from '../styles/SpeechMode.module.css'
-
-const phrases = [
-  'Change My Diaper',
-  'I am Hungry',
-  'I am Olivia',
-  'I Love Mommy',
-  'Feed Me Treats',
-  'Give Me More',
-  'I want to watch TV',
+const phrases: Array<{
+  icon: VectorIcon | null;
+  phrase: string;
+}> = [
+  { icon: 'yes', phrase: 'YES' },
+  { icon: 'no', phrase: 'NO' },
+  { icon: 'pizza', phrase: 'Feed Me'},
+  { icon: 'smile', phrase: 'OLIVIA'},
 ]
 
 export const SpeechMode: React.FC<{
@@ -21,8 +19,6 @@ export const SpeechMode: React.FC<{
   speak: (phrase: string) => void,
 }> = ({ joystick, speak }) => {
   const [ currentPhrase, setCurrentPhrase ] = useState(0)
-
-  // const speak = useSpeech()
 
   const handleNext = () => {
     setCurrentPhrase((currentPhrase + 1) % phrases.length)
@@ -35,7 +31,7 @@ export const SpeechMode: React.FC<{
   useEffect(() => {
     console.log(`speechmode joystick ${JSON.stringify(joystick, null, 2)}`)
     if (joystick.button) {
-      speak(phrases[currentPhrase])
+      speak(phrases[currentPhrase].phrase)
     }
 
     if (joystick.up) {
@@ -50,23 +46,30 @@ export const SpeechMode: React.FC<{
   // console.log(`current phrase ${currentPhrase} [${phrases.join(', ')}]`)
 
   return (
-    <div className={styles.container}>
-      <div className={styles.boxes}>
-        {phrases.map((phrase, index) => (
-          <div key={phrase}>
-              <div
-                className={clsx(
-                  'border-0 border-gray800',
-                  {
-                    ['font-bold']: currentPhrase === index,
-                  }
-                )}
-              >
-                {phrase}
-              </div>
-          </div>
-        ))}
-      </div>
+    <div className="bg-gray-50 min-h-screen min-w-full flex justify-center items-center">
+        <div className="flex flex-col w-6/12 space-y-4">
+          {phrases.map((phrase, index) => (
+            <div
+              key={phrase.phrase}
+              className={clsx(
+                'flex justify-center items-center border-2 border-gray-300 text-4xl p-8 rounded-md bg-gray-200 leading-none',
+                {
+                  ['font-bold bg-yellow-50 border-gray-500 shadow-inner']: currentPhrase === index,
+                }
+              )}
+            >
+              {phrase.icon && (
+                <VectorIcon
+                  className={clsx('w-12 h-12 mr-4', {
+                    ['animate-ping']: currentPhrase === index
+                  })}
+                  type={phrase.icon}
+                />
+              )}
+              <span>{phrase.phrase}</span>
+            </div>
+          ))}
+        </div>
     </div>
   )
 }
