@@ -1,9 +1,0 @@
-.screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.screen > h1 {
-  font-size: 10rem;
-}

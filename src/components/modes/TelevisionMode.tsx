@@ -4,15 +4,26 @@ import ReactPlayer from 'react-player/youtube'
 import { Joystick } from '../../hooks/useJoystick'
 
 const screens = [
+  'https://www.youtube.com/watch?v=DBGR4fMrEzI', // Team Umizoomi full Episode Cap 13
+  'https://www.youtube.com/watch?v=cZ2iSwsFqBc', // Wallykazam 11 full Episode
+  'https://www.youtube.com/watch?v=z46HPYa7WD4', // Dora Halloween
+  'https://www.youtube.com/watch?v=8fKNkiJl_Ro', // Looney Tunes Summer Vacation
+  'https://www.youtube.com/watch?v=2nxE4HTVzQs', // Masha and the Bear - Winter with Masha (50)
+  'https://www.youtube.com/watch?v=HfEVEGf1A8Q', // Spookiz - Movie
+  'https://www.youtube.com/watch?v=T53yDxrnLMY', // Dora - Swiper the Explorer
+  'https://www.youtube.com/watch?v=c7PLTjUkdW0', // Masha - Hooray its Childrens
+
+  /*
   'https://www.youtube.com/watch?v=bPjua3v4Psw', // dora - star mountain
   'https://www.youtube.com/watch?v=Edr6_-L3bi4', // scooby doo - Scaredy Cats Scooby & Shaggy
   'https://www.youtube.com/watch?v=HlhMayx8f7c', // curious george - curious george discovers the poles
   'https://www.youtube.com/watch?v=hRTcdBJsQXE', // masha - furry friends
   'https://www.youtube.com/watch?v=L50l3xJlyXQ', // dora - start catcher
   'https://www.youtube.com/watch?v=Ik_QP4oA_Hg', // curious george - maple monkey madness
+  */
 ]
 
-export const TelevisionMode: React.FC<{ joystick: Joystick }> = ({ joystick }) => {
+export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: string) => void }> = ({ joystick, speak }) => {
   // const [ userInteracted, setUserInteracted ] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
 

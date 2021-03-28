@@ -1,0 +1,42 @@
+:root {
+  --color-primary: #333;
+  --color-secondary: #555;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  html {
+    @apply smooth-scroll;
+  }
+
+  body {
+    /* always show scrollbar on Windows to avoid scrollbar jank during load/transition */
+    overflow-y: scroll;
+  }
+
+  /*
+  a {
+    @apply text-base leading-6 text-gray-500;
+  }
+  */
+
+  /* Remove input spinners [type=number] on Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Remove input spinner [type=number] on Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+}
+
