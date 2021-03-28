@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "build:static": "next build && next export -o dist",
+    "start": "next start",
+    "deploy:fx": "NODE_ENV=production yarn build:static && rsync -rcz --force --delete --progress -e \"ssh -p24816 -i ~/.ssh/id_rsa_insecure\" dist/* firxworx@server29.hostwhitelabel.com:/home/firxworx/projects.firxworx.com/olivia-joystick-nextjs && echo \"https://projects.firxworx.com/olivia-joystick-nextjs\""
   },
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.0",
