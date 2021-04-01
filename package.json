@@ -10,20 +10,30 @@
     "deploy:fx": "NODE_ENV=production yarn build:static && rsync -rcz --force --delete --progress -e \"ssh -p24816 -i ~/.ssh/id_rsa_insecure\" dist/* firxworx@server29.hostwhitelabel.com:/home/firxworx/projects.firxworx.com/olivia-joystick-nextjs && echo \"https://projects.firxworx.com/olivia-joystick-nextjs\""
   },
   "dependencies": {
+    "@react-three/cannon": "^0.6.1",
+    "@react-three/drei": "^4.0.0",
+    "@react-three/fiber": "^6.0.1",
     "@tailwindcss/aspect-ratio": "^0.2.0",
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/typography": "^0.4.0",
     "clsx": "^1.1.1",
+    "drei": "^2.2.21",
     "next": "10.0.4",
+    "nice-color-palettes": "^3.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-icons": "^4.2.0",
     "react-player": "^2.9.0",
-    "tailwindcss": "^2.0.3"
+    "react-three-fiber": "^5.3.22",
+    "tailwindcss": "^2.0.3",
+    "three": "^0.126.1",
+    "use-cannon": "^0.5.3"
   },
   "devDependencies": {
     "@types/node": "^14.14.35",
     "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.3",
+    "@types/three": "^0.126.2",
     "autoprefixer": "^10.2.5",
     "postcss": "^8.2.8",
     "postcss-preset-env": "^6.7.0",
