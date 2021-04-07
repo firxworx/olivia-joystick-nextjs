@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 
 import { Joystick } from '../../hooks/useJoystick'
 
-import { Cloud, Stars, OrbitControls } from '@react-three/drei'
+import { Html, Cloud, Stars, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 
 // dynamic() is the nextjs way to go for loading these assets
@@ -35,7 +35,7 @@ return (
     <ambientLight intensity={2} />
     <pointLight position={[40, 40, 40]} />
     <OrbitControls />
-    <Suspense fallback={null}>
+    <Suspense fallback={<Html center>Loading.</Html>}>
       <Cloud />
       <Stars />
       <Birds />
