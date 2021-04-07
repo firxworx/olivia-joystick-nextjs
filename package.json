@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-spring/three": "^9.0.0",
+    "@react-spring/web": "^9.0.0",
     "@react-three/a11y": "^2.0.0",
     "@react-three/cannon": "^1.0.0",
     "@react-three/drei": "^4.0.3",
@@ -28,11 +29,9 @@
     "react-icons": "^4.2.0",
     "react-player": "^2.9.0",
     "react-spring": "^9.0.0",
-    "react-three-fiber": "^5.3.22",
     "tailwindcss": "^2.0.3",
     "three": "^0.127.0",
-    "three-stdlib": "^1.2.2",
-    "use-cannon": "^0.5.3"
+    "three-stdlib": "^1.2.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.35",
@@ -42,6 +41,7 @@
     "autoprefixer": "^10.2.5",
     "postcss": "^8.2.8",
     "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.2.1",
     "typescript": "^4.2.3"
   }
 }
