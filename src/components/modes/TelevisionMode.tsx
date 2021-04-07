@@ -4,6 +4,26 @@ import ReactPlayer from 'react-player/youtube'
 import { Joystick } from '../../hooks/useJoystick'
 
 const screens = [
+  'https://www.youtube.com/watch?v=Xmyw2Pm0X9Q', // sesame 4326 full
+  'https://www.youtube.com/watch?v=nqPj3sX3AMs', // dinosaur on sesame st
+  'https://www.youtube.com/watch?v=a-0fu7N1O9A', // slimer come home
+  'https://www.youtube.com/watch?v=s2VradjmyGw', // masha stranger danger
+  'https://www.youtube.com/watch?v=EpKK-6EaLw0', // older dora
+  'https://www.youtube.com/watch?v=KjiyTcma46U', // caillu and the lake
+  'https://www.youtube.com/watch?v=tngubhsEp9o', // masha
+
+  /*
+  'https://www.youtube.com/watch?v=j2WhBtmpqCA', // Sesame Cookie MOnster
+  'https://www.youtube.com/watch?v=VCZ-7GQP1Ko', // Chip n Dales Nutty Tales
+  'https://www.youtube.com/watch?v=gHczBGKrHHw', // Sesame Cookie Monster Foodie Truck COmpilation
+  'https://www.youtube.com/watch?v=-sFj8Q3Z1Ak', // Peter Rabbit
+  'https://www.youtube.com/watch?v=X_Sc2Hkgd3U', // Sesame Mysterious Cookie Thief
+  'https://www.youtube.com/watch?v=USX2RhVCuQQ', // Masha welcoming spring
+  'https://www.youtube.com/watch?v=NQy4MVp1kgw', // Masha at your service
+  'https://www.youtube.com/watch?v=Vb2ZXRh74WU', // Storybots
+  */
+
+  /*
   'https://www.youtube.com/watch?v=DBGR4fMrEzI', // Team Umizoomi full Episode Cap 13
   'https://www.youtube.com/watch?v=cZ2iSwsFqBc', // Wallykazam 11 full Episode
   'https://www.youtube.com/watch?v=z46HPYa7WD4', // Dora Halloween
@@ -12,6 +32,7 @@ const screens = [
   'https://www.youtube.com/watch?v=HfEVEGf1A8Q', // Spookiz - Movie
   'https://www.youtube.com/watch?v=T53yDxrnLMY', // Dora - Swiper the Explorer
   'https://www.youtube.com/watch?v=c7PLTjUkdW0', // Masha - Hooray its Childrens
+  */
 
   /*
   'https://www.youtube.com/watch?v=bPjua3v4Psw', // dora - star mountain
