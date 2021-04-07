@@ -1,43 +1,11 @@
 import React, { useMemo, useRef } from 'react'
 import * as THREE from 'three'
-import { Canvas, useFrame } from 'react-three-fiber' // useThree
+import { Canvas, useFrame } from '@react-three/fiber'
 import { Physics, usePlane, useBox, useCylinder } from '@react-three/cannon'
-// import { Sky } from 'drei' // Stats, Sky, OrbitControls, PointerLockControls  // SKy current version crashes
-// import { Physics } from 'use-cannon'
 import niceColors from 'nice-color-palettes'
-import Sphere from './3d/Sphere'
 import { Joystick } from '../../hooks/useJoystick'
 
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
-// https://github.com/pmndrs/drei/issues/261
-
-// import { Canvas, useFrame, useThree } from "react-three-fiber";
-// https://codesandbox.io/s/3qdm3?file=/src/App.tsx:128-192 // r3f hello world
-
-// https://en.wikipedia.org/wiki/Minimum_bounding_box#Axis-aligned_minimum_bounding_box
-
-// https://tympanus.net/codrops/2020/09/30/creating-mirrors-in-react-three-fiber-and-three-js/
-// https://tympanus.net/codrops/2020/09/30/creating-mirrors-in-react-three-fiber-and-three-js/
-
-// https://codesandbox.io/s/github/onion2k/r3f-by-example/tree/develop/examples/physics/three-balls-perpetual-physics-usecannon?file=/src/ball.js
-
 // 😊, 😢, 🤖, 🦊, 👌🏻
-
-// https://codesandbox.io/s/m30n5?file=/src/index.js - super cool spring transition
-
-// https://codesandbox.io/s/3wbkv?file=/index.js
-// https://codesandbox.io/s/ewpqf?file=/src/index.js
-// https://codesandbox.io/s/0j6yb - cool cube-grid, could move x,y with joystick
-
-// https://codesandbox.io/s/bee-and-flowers-tin2n?file=/src/world/Player.js -- flying bee demo
-
-// https://codesandbox.io/s/r3f-cannon-physics-h4mwj?file=/src/index.js - plane that disappears then blocks fall
-
-// https://codesandbox.io/s/angry-noether-txxw9?file=/src/Player.js music player ui
-// https://codesandbox.io/s/use-cannon-cylinder-wobble-34z0n wobbly cylinder
-// https://codesandbox.io/s/v6lg3?file=/src/App.js - icosohedrons - wobble, slide, etc
-// https://codesandbox.io/s/h97zc - SOLID animated example (the initials that cast a shadow)
 
 const Plane: React.FC<{
   position?: [number, number, number],
@@ -47,22 +15,16 @@ const Plane: React.FC<{
     mass: 0,
     position,
     rotation,
+    // ...props
   }))
 
   return (
-    <mesh ref={ref} receiveShadow>
+    <mesh
+      ref={ref}
+      receiveShadow
+    >
       <planeBufferGeometry args={[100, 100]} />
       <meshStandardMaterial attach="material" color={'#aaa'} />
-    </mesh>
-  )
-}
-
-const CannonPlane: React.FC<any> = (props) => {
-  const [ref] = usePlane(() => ({ ...props }));
-  return (
-    <mesh ref={ref} castShadow receiveShadow>
-      <planeGeometry attach="geometry" args={[100, 100]} />
-      <meshStandardMaterial color={"#dddddd"} />
     </mesh>
   )
 }
@@ -181,13 +143,6 @@ const Cubes: React.FC<{ number: number }> = ({ number }) => {
   )
 }
 
-// <pointLight position={[10, 10, 10]} />
-// <directionalLight args={["#FFFFFF", 0.6]} position={[-0.5, 1, 1]} castShadow />
-// <ambientLight />
-// <hemisphereLight intensity={0.35} />
-// <directionalLight position={[5, 5, 5]} intensity={2} castShadow shadow-camera-zoom={2} />
-// <spotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
-// <fog attach="fog" args={["#041830", 5, 10]} />
 export const ThreeMode2: React.FC<{
   joystick: Joystick,
   speak: (phrase: string) => void
@@ -195,28 +150,18 @@ export const ThreeMode2: React.FC<{
   return (
     <Canvas
       className="w-full h-full"
-      // colorManagement
-      // pixelRatio={window.devicePixelRatio}
-      // camera={{ position: [15, 15, 30] }}
-      // camera={{ position: [-10, 10, 10], fov: 35 }} // near: 5, far: 20
-      // gl={{ antialias: false, alpha: false }}
-      // camera={{ position: [0, 0, 20] }}
-      // camera={{ position: [0, 0, 1] }}
     >
-
-    <ambientLight intensity={0.5} />
-    <pointLight position={[2, 10, 10]} castShadow />
-    <Physics>
-      {/* <axesHelper position={[0, 0, 0]} args={[10]} /> */}
-      <Plane position={[0, -2.25, 0]} />
-      {joystick.button && (
-        <>
-          {/*<Coins number={20} />*/}
-          <Cubes number={80} />
-        </>
-      )}
-      {/*<Sphere position={[0.5, 7, 0]} color={"red"} />*/}
-    </Physics>
-  </Canvas>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[2, 10, 10]} castShadow />
+      <Physics>
+        <Plane position={[0, -2.25, 0]} />
+        {joystick.button && (
+          <>
+            {/*<Coins number={20} />*/}
+            <Cubes number={80} />
+          </>
+        )}
+      </Physics>
+    </Canvas>
   )
 }
