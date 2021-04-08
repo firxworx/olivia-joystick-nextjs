@@ -13,10 +13,10 @@ const modes = [
 ]
 
 export default function Home() {
-  const [ currentMode, setCurrentMode ] = useState(0)
+  const [currentMode, setCurrentMode] = useState(0)
 
-  const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
-  const [ keyboard, setKeyboard ] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
+  const [joystick, setJoystick] = useState<Joystick>(initialJoystickState)
+  const [keyboard, setKeyboard] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
 
   const speak = useSpeech()
 
@@ -40,18 +40,19 @@ export default function Home() {
       speak('DOWN')
     }
 
+    if (joystick.altButton || keyboard.shift) {
+      speak('ALT')
+    }
+
     return {
       up: joystick.up || keyboard.up,
       down: joystick.down || keyboard.down,
       left: joystick.left || keyboard.left,
       right: joystick.right || keyboard.right,
       button: joystick.button || keyboard.space,
+      altButton: joystick.altButton || keyboard.shift,
     }
-  }, [
-    joystick.up, joystick.down, joystick.left, joystick.right, joystick.button,
-    keyboard.up, keyboard.down, keyboard.left, keyboard.right, keyboard.space,
-    speak
-  ])
+  }, [joystick, keyboard, speak])
 
   const handleNextMode = () => {
     const newModeIndex = (currentMode + 1) % modes.length
@@ -75,14 +76,10 @@ export default function Home() {
     if (combinedControl.right) {
       handleNextMode()
     }
-  }, [ combinedControl.left, combinedControl.right ])
-
+  }, [combinedControl.left, combinedControl.right])
 
   console.log(`current mode ${currentMode}`)
   const CurrentMode = modes[currentMode].component
-
-  // <TelevisionMode joystick={combinedControl} />
-  // <SpeechMode joystick={joystick} />
 
   return (
     <GridLayout>
