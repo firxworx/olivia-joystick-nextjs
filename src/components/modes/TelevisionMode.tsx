@@ -4,6 +4,14 @@ import ReactPlayer from 'react-player/youtube'
 import { Joystick } from '../../hooks/useJoystick'
 
 const screens = [
+  'https://www.youtube.com/watch?v=VkQkg8jFbA4',
+  'https://www.youtube.com/watch?v=HsPgLCcEXLI',
+  'https://www.youtube.com/watch?v=hSwF40YgMxg', // masha peace and quiet
+  'https://www.youtube.com/watch?v=fzZaXbGwv-o', // ghostbusters pilot
+  'https://www.youtube.com/watch?v=MDF8sAnY92Q', // masha girl power
+  'https://www.youtube.com/watch?v=eeVDXCWwmyE', // mr rogers
+  'https://www.youtube.com/watch?v=oyClviB1xd8', // sesame search for elmos costume
+  /*
   'https://www.youtube.com/watch?v=DBGR4fMrEzI', // Team Umizoomi full Episode Cap 13
   'https://www.youtube.com/watch?v=cZ2iSwsFqBc', // Wallykazam 11 full Episode
   'https://www.youtube.com/watch?v=z46HPYa7WD4', // Dora Halloween
@@ -12,7 +20,7 @@ const screens = [
   'https://www.youtube.com/watch?v=HfEVEGf1A8Q', // Spookiz - Movie
   'https://www.youtube.com/watch?v=T53yDxrnLMY', // Dora - Swiper the Explorer
   'https://www.youtube.com/watch?v=c7PLTjUkdW0', // Masha - Hooray its Childrens
-
+  */
   /*
   'https://www.youtube.com/watch?v=bPjua3v4Psw', // dora - star mountain
   'https://www.youtube.com/watch?v=Edr6_-L3bi4', // scooby doo - Scaredy Cats Scooby & Shaggy
@@ -23,15 +31,18 @@ const screens = [
   */
 ]
 
-export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: string) => void }> = ({ joystick, speak }) => {
+export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: string) => void }> = ({
+  joystick,
+  speak,
+}) => {
   // const [ userInteracted, setUserInteracted ] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
 
-  const [ isPlaying, setIsPlaying ] = useState(true)
-  const [ isReady, setIsReady ] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isReady, setIsReady] = useState(false)
 
-  const [ currentScreen, setCurrentScreen ] = useState(0)
-  const [ screenProgress, setScreenProgress ] = useState<Array<number>>(Array.from({ length: screens.length }, () => 0))
+  const [currentScreen, setCurrentScreen] = useState(0)
+  const [screenProgress, setScreenProgress] = useState<Array<number>>(Array.from({ length: screens.length }, () => 0))
 
   // const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
 
@@ -66,7 +77,7 @@ export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: stri
       const currTime = playerRef.current?.getCurrentTime()
 
       if (currTime) {
-        const sp = [ ...screenProgress ]
+        const sp = [...screenProgress]
         sp[currentScreen] = currTime
 
         console.log(`screen ${currentScreen} saving time ${currTime}`)
@@ -80,7 +91,7 @@ export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: stri
       const currTime = playerRef.current?.getCurrentTime()
 
       if (currTime) {
-        const sp = [ ...screenProgress ]
+        const sp = [...screenProgress]
         sp[currentScreen] = currTime
 
         console.log(`screen ${currentScreen} saving time ${currTime}`)
@@ -89,7 +100,7 @@ export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: stri
 
       handleBack()
     }
-  }, [ joystick.button, joystick.up, joystick.down, joystick.left, joystick.right ])
+  }, [joystick.button, joystick.up, joystick.down, joystick.left, joystick.right])
 
   /*
   useEffect(() => {
