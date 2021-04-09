@@ -33,7 +33,6 @@ const screens = [
   'https://www.youtube.com/watch?v=T53yDxrnLMY', // Dora - Swiper the Explorer
   'https://www.youtube.com/watch?v=c7PLTjUkdW0', // Masha - Hooray its Childrens
   */
-
   /*
   'https://www.youtube.com/watch?v=bPjua3v4Psw', // dora - star mountain
   'https://www.youtube.com/watch?v=Edr6_-L3bi4', // scooby doo - Scaredy Cats Scooby & Shaggy
@@ -44,15 +43,18 @@ const screens = [
   */
 ]
 
-export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: string) => void }> = ({ joystick, speak }) => {
+export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: string) => void }> = ({
+  joystick,
+  speak,
+}) => {
   // const [ userInteracted, setUserInteracted ] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
 
-  const [ isPlaying, setIsPlaying ] = useState(true)
-  const [ isReady, setIsReady ] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isReady, setIsReady] = useState(false)
 
-  const [ currentScreen, setCurrentScreen ] = useState(0)
-  const [ screenProgress, setScreenProgress ] = useState<Array<number>>(Array.from({ length: screens.length }, () => 0))
+  const [currentScreen, setCurrentScreen] = useState(0)
+  const [screenProgress, setScreenProgress] = useState<Array<number>>(Array.from({ length: screens.length }, () => 0))
 
   // const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
 
@@ -87,13 +89,14 @@ export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: stri
       const currTime = playerRef.current?.getCurrentTime()
 
       if (currTime) {
-        const sp = [ ...screenProgress ]
+        const sp = [...screenProgress]
         sp[currentScreen] = currTime
 
         console.log(`screen ${currentScreen} saving time ${currTime}`)
         setScreenProgress(sp)
       }
 
+      speak('UP')
       handleNext()
     }
 
@@ -101,16 +104,17 @@ export const TelevisionMode: React.FC<{ joystick: Joystick, speak: (phrase: stri
       const currTime = playerRef.current?.getCurrentTime()
 
       if (currTime) {
-        const sp = [ ...screenProgress ]
+        const sp = [...screenProgress]
         sp[currentScreen] = currTime
 
         console.log(`screen ${currentScreen} saving time ${currTime}`)
         setScreenProgress(sp)
       }
 
+      speak('DOWN')
       handleBack()
     }
-  }, [ joystick.button, joystick.up, joystick.down, joystick.left, joystick.right ])
+  }, [joystick.button, joystick.up, joystick.down, joystick.left, joystick.right])
 
   /*
   useEffect(() => {

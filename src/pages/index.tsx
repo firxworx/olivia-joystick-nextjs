@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
+
 import { GridLayout } from '../components/GridLayout'
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
-
 import { TelevisionMode } from '../components/modes/TelevisionMode'
 import { SpeechMode } from '../components/modes/SpeechMode'
 import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
@@ -13,10 +13,10 @@ const modes = [
 ]
 
 export default function Home() {
-  const [ currentMode, setCurrentMode ] = useState(0)
+  const [currentMode, setCurrentMode] = useState(0)
 
-  const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
-  const [ keyboard, setKeyboard ] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
+  const [joystick, setJoystick] = useState<Joystick>(initialJoystickState)
+  const [keyboard, setKeyboard] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
 
   const speak = useSpeech()
 
@@ -32,57 +32,30 @@ export default function Home() {
   useKeyboard(handleKeyboardChange)
 
   const combinedControl: Joystick = useMemo(() => {
-    if (joystick.up || keyboard.up) {
-      speak('UP')
-    }
-
-    if (joystick.down || keyboard.down) {
-      speak('DOWN')
-    }
-
     return {
       up: joystick.up || keyboard.up,
       down: joystick.down || keyboard.down,
       left: joystick.left || keyboard.left,
       right: joystick.right || keyboard.right,
       button: joystick.button || keyboard.space,
+      altButton: joystick.altButton || keyboard.shift,
     }
-  }, [
-    joystick.up, joystick.down, joystick.left, joystick.right, joystick.button,
-    keyboard.up, keyboard.down, keyboard.left, keyboard.right, keyboard.space,
-    speak
-  ])
+  }, [joystick, keyboard])
 
   const handleNextMode = () => {
     const newModeIndex = (currentMode + 1) % modes.length
 
-    speak(`RIGHT, ${modes[newModeIndex].name}`)
-    setCurrentMode(newModeIndex)
-  }
-
-  const handlePreviousMode = () => {
-    const newModeIndex = (currentMode - 1 + modes.length) % modes.length
-
-    speak(`LEFT, ${modes[newModeIndex].name}`)
+    speak(`SWITCH, ${modes[newModeIndex].name}`)
     setCurrentMode(newModeIndex)
   }
 
   useEffect(() => {
-    if (combinedControl.left) {
-      handlePreviousMode()
-    }
-
-    if (combinedControl.right) {
+    if (combinedControl.altButton) {
       handleNextMode()
     }
-  }, [ combinedControl.left, combinedControl.right ])
+  }, [combinedControl.altButton])
 
-
-  console.log(`current mode ${currentMode}`)
   const CurrentMode = modes[currentMode].component
-
-  // <TelevisionMode joystick={combinedControl} />
-  // <SpeechMode joystick={joystick} />
 
   return (
     <GridLayout>
