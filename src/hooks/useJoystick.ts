@@ -7,15 +7,17 @@ if (typeof window !== 'undefined') {
 }
 
 export interface Joystick {
-  button: boolean;
-  up: boolean;
-  down: boolean;
-  left: boolean;
-  right: boolean;
+  button: boolean
+  altButton: boolean
+  up: boolean
+  down: boolean
+  left: boolean
+  right: boolean
 }
 
 export const initialJoystickState: Joystick = {
   button: false,
+  altButton: false,
   up: false,
   down: false,
   left: false,
@@ -34,21 +36,35 @@ export const useJoystick = (onJoystickChange: (status: Joystick) => void) => {
     //  [gamepad.index]: gamepad,
     // }
 
-    const { index, id, buttons: [ btn0 ], axes: [axis0, axis1 ] } = gamepad
+    const {
+      index,
+      id,
+      buttons: [btn0, btn1],
+      axes: [axis0, axis1],
+    } = gamepad
 
     const latest: Joystick = {
-      button: (btn0 && btn0.pressed),
-      up: (axis1 < -0.5),
-      down: (axis1 > 0.5),
-      left: (axis0 < -0.5),
-      right: (axis0 > 0.5),
+      button: btn0?.pressed,
+      altButton: btn1?.pressed,
+      up: axis1 < -0.5,
+      down: axis1 > 0.5,
+      left: axis0 < -0.5,
+      right: axis0 > 0.5,
     }
 
-    const { button, up, down, left, right } = joystickRef.current
+    const { button, altButton, up, down, left, right } = joystickRef.current
 
-    if (latest.button !== button || latest.up !== up || latest.down !== down || latest.left !== left || latest.right !== right) {
+    if (
+      latest.button !== button ||
+      latest.altButton !== altButton ||
+      latest.up !== up ||
+      latest.down !== down ||
+      latest.left !== left ||
+      latest.right !== right
+    ) {
       joystickRef.current = {
         button: latest.button,
+        altButton: latest.altButton,
         up: latest.up,
         down: latest.down,
         left: latest.left,

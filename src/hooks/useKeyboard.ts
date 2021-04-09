@@ -4,15 +4,17 @@ import { useCallback, useEffect, useRef } from 'react'
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
 
 export interface KeyboardNavigation {
-  space: boolean;
-  up: boolean;
-  down: boolean;
-  left: boolean;
-  right: boolean;
+  space: boolean
+  shift: boolean
+  up: boolean
+  down: boolean
+  left: boolean
+  right: boolean
 }
 
 export const initialKeyboardNavigationState: KeyboardNavigation = {
   space: false,
+  shift: false,
   up: false,
   down: false,
   left: false,
@@ -21,15 +23,16 @@ export const initialKeyboardNavigationState: KeyboardNavigation = {
 
 const keyNameDict = {
   ' ': 'space',
-  'Spacebar': 'space',
-  'ArrowUp': 'up',
-  'ArrowDown': 'down',
-  'ArrowLeft': 'left',
-  'ArrowRight': 'right',
-  'W': 'up',
-  'S': 'down',
-  'A': 'left',
-  'D': 'right',
+  Spacebar: 'space',
+  Shift: 'shift',
+  ArrowUp: 'up',
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  ArrowRight: 'right',
+  W: 'up',
+  S: 'down',
+  A: 'left',
+  D: 'right',
 }
 
 const haveWindow = typeof window === 'object'
@@ -39,12 +42,20 @@ export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => vo
 
   const keyupHandler = useCallback((event: KeyboardEvent) => {
     const { key } = event
-    // console.log(key)
+    console.log(key)
 
     if (
-      key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' ||
-      key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
-      key === ' ' || key === 'Spacebar'
+      key === 'ArrowUp' ||
+      key === 'ArrowDown' ||
+      key === 'ArrowLeft' ||
+      key === 'ArrowRight' ||
+      key === 'W' ||
+      key === 'S' ||
+      key === 'A' ||
+      key === 'D' ||
+      key === ' ' ||
+      key === 'Spacebar' ||
+      key === 'Shift'
     ) {
       event.stopPropagation()
 
@@ -61,10 +72,18 @@ export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => vo
     const { key } = event
     // console.log(key)
 
-    if  (
-      key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' ||
-      key === 'W' || key === 'S' || key === 'A' || key === 'D' ||
-      key === ' ' || key === 'Spacebar'
+    if (
+      key === 'ArrowUp' ||
+      key === 'ArrowDown' ||
+      key === 'ArrowLeft' ||
+      key === 'ArrowRight' ||
+      key === 'W' ||
+      key === 'S' ||
+      key === 'A' ||
+      key === 'D' ||
+      key === ' ' ||
+      key === 'Spacebar' ||
+      key === 'Shift'
     ) {
       event.stopPropagation()
 
@@ -101,5 +120,5 @@ export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => vo
       window.removeEventListener('keyup', keyupHandler)
       // window.removeEventListener('keypress', keypressHandler)
     }
-  }, [ keydownHandler, keyupHandler ])
+  }, [keydownHandler, keyupHandler])
 }
