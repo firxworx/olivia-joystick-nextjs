@@ -84,6 +84,7 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
         setScreenProgress(sp)
       }
 
+      speak('UP')
       handleNext()
     }
 
@@ -98,6 +99,7 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
         setScreenProgress(sp)
       }
 
+      speak('DOWN')
       handleBack()
     }
   }, [joystick.button, joystick.up, joystick.down, joystick.left, joystick.right])

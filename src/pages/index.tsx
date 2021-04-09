@@ -32,14 +32,6 @@ export default function Home() {
   useKeyboard(handleKeyboardChange)
 
   const combinedControl: Joystick = useMemo(() => {
-    if (joystick.up || keyboard.up) {
-      speak('UP')
-    }
-
-    if (joystick.down || keyboard.down) {
-      speak('DOWN')
-    }
-
     return {
       up: joystick.up || keyboard.up,
       down: joystick.down || keyboard.down,
@@ -48,16 +40,20 @@ export default function Home() {
       button: joystick.button || keyboard.space,
       altButton: joystick.altButton || keyboard.shift,
     }
-  }, [joystick, keyboard, speak])
+  }, [joystick, keyboard])
+
+  const handleNextMode = () => {
+    const newModeIndex = (currentMode + 1) % modes.length
+
+    speak(`SWITCH, ${modes[newModeIndex].name}`)
+    setCurrentMode(newModeIndex)
+  }
 
   useEffect(() => {
-    // advance to next mode when altButton pressed
     if (combinedControl.altButton) {
-      const newModeIndex = (currentMode + 1) % modes.length
-      speak(`SWITCH, ${modes[newModeIndex].name}`)
-      setCurrentMode(newModeIndex)
+      handleNextMode()
     }
-  }, [combinedControl.altButton, currentMode])
+  }, [combinedControl.altButton])
 
   const CurrentMode = modes[currentMode].component
 
