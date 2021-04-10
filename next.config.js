@@ -3,6 +3,9 @@
 
 module.exports = (phase, { defaultConfig }) => {
   return {
+    future: {
+      webpack5: false,
+    },
     trailingSlash: true,
     basePath: '/olivia-joystick-nextjs', // for deploy to folder off base subdomain
   }
