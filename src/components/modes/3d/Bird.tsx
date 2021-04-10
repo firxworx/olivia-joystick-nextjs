@@ -12,21 +12,21 @@ const Bird = ({ speed, factor, url, ...props }) => {
   // @ts-ignore
   const [mixer] = useState(() => new THREE.AnimationMixer())
 
-  useEffect(() => {
-    // @ts-ignore
-    if (gltf?.animations) {
+  useEffect(
+    () => {
       // @ts-ignore
-      return void mixer.clipAction(gltf.animations[0], group.current).play()
-    }
-  },
+      if (gltf?.animations) {
+        // @ts-ignore
+        return void mixer.clipAction(gltf.animations[0], group.current).play()
+      }
+    },
     // @ts-ignore
     [gltf.animations, mixer]
   )
 
   useFrame((state, delta) => {
     // @ts-ignore
-    group.current.rotation.y +=
-      Math.sin((delta * factor) / 2) * Math.cos((delta * factor) / 2) * 1.5
+    group.current.rotation.y += Math.sin((delta * factor) / 2) * Math.cos((delta * factor) / 2) * 1.5
     mixer.update(delta * speed)
   })
 
@@ -41,9 +41,11 @@ const Bird = ({ speed, factor, url, ...props }) => {
           morphTargetInfluences={gltf.nodes.Object_0.morphTargetInfluences}
           rotation={[1.5707964611537577, 0, 0]}
         >
-          <bufferGeometry attach="geometry"
-          // @ts-ignore
-          {...gltf.nodes.Object_0.geometry} />
+          <bufferGeometry
+            attach="geometry"
+            // @ts-ignore
+            {...gltf.nodes.Object_0.geometry}
+          />
           <meshStandardMaterial
             attach="material"
             // @ts-ignore
