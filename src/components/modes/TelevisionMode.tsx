@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactPlayer from 'react-player/youtube'
 
 import { Joystick } from '../../hooks/useJoystick'
+import { useSpeech } from '../../hooks/useSpeech'
+import { useControllerStore } from '../../stores/useControllerStore'
 
 const screens = [
   'https://www.youtube.com/watch?v=Xmyw2Pm0X9Q', // sesame 4326 full
@@ -43,10 +45,7 @@ const screens = [
   */
 ]
 
-export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: string) => void }> = ({
-  joystick,
-  speak,
-}) => {
+export const TelevisionMode: React.FC<{}> = () => {
   // const [ userInteracted, setUserInteracted ] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
 
@@ -56,7 +55,7 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
   const [currentScreen, setCurrentScreen] = useState(0)
   const [screenProgress, setScreenProgress] = useState<Array<number>>(Array.from({ length: screens.length }, () => 0))
 
-  // const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
+  const speak = useSpeech()
 
   const handleNext = () => {
     setCurrentScreen((currentScreen + 1) % screens.length)
@@ -68,17 +67,11 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
     setIsReady(false)
   }
 
-  /*
-  const handleJoystickChange = useCallback((js: Joystick) => {
-    setJoystick({ ...js })
-  }, [])
-  */
-
   const handlePlayerReady = (position: number) => {
     setIsReady(true)
   }
 
-  // useJoystick(handleJoystickChange)
+  const joystick = useControllerStore((state) => state.controller)
 
   useEffect(() => {
     if (joystick.button) {
@@ -134,9 +127,6 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
 
   return (
     <>
-      {/*
-      <h2>{`${screens[currentScreen]} ... ${screenProgress[currentScreen]}`}</h2>
-      */}
       <ReactPlayer
         ref={playerRef}
         url={screens[currentScreen]}
