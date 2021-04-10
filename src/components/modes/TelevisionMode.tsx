@@ -4,6 +4,22 @@ import ReactPlayer from 'react-player/youtube'
 import { Joystick } from '../../hooks/useJoystick'
 
 const screens = [
+  'https://www.youtube.com/watch?v=tMBH44R2-rY', // Sesame Street - Episode 4323
+  'https://www.youtube.com/watch?v=iBdTVblUgQQ', // sesame
+  'https://www.youtube.com/watch?v=oyClviB1xd8', // sesame search for elmo's costume
+  'https://www.youtube.com/watch?v=IA-LQzAgbqA', // heman first episode pilot
+  'https://www.youtube.com/watch?v=bNxFe4P1_WY', // hercules s1e10
+  'https://www.youtube.com/watch?v=sS3kFOmj9kQ', // gummy bears s4 e03
+  'https://www.youtube.com/watch?v=oyClviB1xd8', // sesame search for elmo's costume
+  'https://www.youtube.com/watch?v=z2UYkI1sk4Q', // masha what a wonderful game
+  'https://www.youtube.com/watch?v=VOd381jot0A', // gummy bears s3 06
+  'https://www.youtube.com/watch?v=WkkgJkNVOGY', // sesame elmos new band
+
+  'https://www.youtube.com/watch?v=OpIT3t3_t7A', // winnie the pooh and a day for eeyore
+  'https://www.youtube.com/watch?v=S8jfN66vYa0', // little bear to grandma's house
+  'https://www.youtube.com/watch?v=KLrAwZrXJC8', // sesame elmo teaches abby to pretend
+
+  /*
   'https://www.youtube.com/watch?v=VkQkg8jFbA4',
   'https://www.youtube.com/watch?v=HsPgLCcEXLI',
   'https://www.youtube.com/watch?v=hSwF40YgMxg', // masha peace and quiet
@@ -11,6 +27,7 @@ const screens = [
   'https://www.youtube.com/watch?v=MDF8sAnY92Q', // masha girl power
   'https://www.youtube.com/watch?v=eeVDXCWwmyE', // mr rogers
   'https://www.youtube.com/watch?v=oyClviB1xd8', // sesame search for elmos costume
+  */
   /*
   'https://www.youtube.com/watch?v=DBGR4fMrEzI', // Team Umizoomi full Episode Cap 13
   'https://www.youtube.com/watch?v=cZ2iSwsFqBc', // Wallykazam 11 full Episode
