@@ -1,11 +1,9 @@
 import React, { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 
-import { Joystick } from '../../hooks/useJoystick'
-
-import { Html, Sky, Cloud, Stars, OrbitControls } from '@react-three/drei'
+import { Html } from '@react-three/drei' // Sky, Cloud, Stars, OrbitControls
 import { Canvas } from '@react-three/fiber'
-import { Physics, usePlane, useBox, useCylinder } from '@react-three/cannon'
+import { Physics, usePlane } from '@react-three/cannon' // useBox, useCylinder
 
 import { Targets } from './3d/FunMode/Targets'
 import { Player } from './3d/FunMode/Player'
@@ -57,10 +55,7 @@ const Birds: React.FC<{}> = () => {
   )
 }
 
-export const ThreeFunMode: React.FC<{ joystick: Joystick; speak: (phrase: string) => void }> = ({
-  joystick,
-  speak,
-}) => {
+export const ThreeFunMode: React.FC<{}> = () => {
   return (
     <Canvas
       // camera={{ position: [0.5, 3, 4.5], fov: 50 }}
@@ -69,7 +64,7 @@ export const ThreeFunMode: React.FC<{ joystick: Joystick; speak: (phrase: string
       // @ts-ignore
       shadowMap
     >
-      <Sky sunPosition={[100, 10, 100]} />
+      {/*<Sky sunPosition={[100, 10, 100]} />*/}
       <axesHelper />
 
       {/* <fog attach="fog" args={["white", 0, 26]} /> */}
@@ -79,7 +74,8 @@ export const ThreeFunMode: React.FC<{ joystick: Joystick; speak: (phrase: string
       <Suspense fallback={<Html center>Loading.</Html>}>
         <Physics gravity={[0, -18, 0]} tolerance={0} iterations={50} broadphase={'SAP'}>
           <Targets />
-          <Birds />
+          {/* fackin birds causing an issue when things change */}
+          {/*<Birds />*/}
           <Player />
           <GroundPlane />
         </Physics>
