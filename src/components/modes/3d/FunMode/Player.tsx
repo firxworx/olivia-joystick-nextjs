@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSphere, BodyProps } from '@react-three/cannon'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Raycaster, Vector3, Euler, Quaternion } from 'three'
+// import { Raycaster, Vector3, Euler, Quaternion } from 'three'
+import * as THREE from 'three'
 import { Projectile } from './Projectile'
 import { useMouseInput } from './useMouseInput'
 import { useKeyboardInput } from './useKeyboardInput'
 import { useVariableRef } from './useVariableRef'
+import { Joystick } from '../../../../hooks/useJoystick'
+import { useControllerStore } from '../../../../stores/useControllerStore'
 
 const SPEED = 5
 const BULLET_SPEED = 35
@@ -40,12 +43,11 @@ export const Player: React.FC<{}> = () => {
   })
 
   // const pressed = useKeyboardInput(['w', 'a', 's', 'd', ' '])
-  const pressed = useKeyboardInput(['i', 'j', 'k', 'l', 'm', 'n'])
+  // kf - const pressed = useKeyboardInput(['i', 'j', 'k', 'l', 'm', 'n'])
 
-  const pressedMouse = useMouseInput()
-
-  const input = useVariableRef<ReturnType<typeof useKeyboardInput>>(pressed)
-  const mouseInput = useVariableRef<ReturnType<typeof useMouseInput>>(pressedMouse)
+  // const pressedMouse = useMouseInput()
+  // const input = useVariableRef<ReturnType<typeof useKeyboardInput>>(pressed)
+  // const mouseInput = useVariableRef<ReturnType<typeof useMouseInput>>(pressedMouse)
 
   const { camera, scene } = useThree()
 
@@ -53,40 +55,48 @@ export const Player: React.FC<{}> = () => {
     api.velocity.subscribe((v) => (stateRef.current.vel = v))
   }, [api])
 
+  const joystick = useControllerStore((state) => state.controller)
+
   useFrame(() => {
     // const { w, s, a, d } = input.current
-    const { i, j, k, l } = input.current
+    // const { i, j, k, l } = input.current
     // const space = input.current[' ']
+    /*
     const space = input.current['m']
-
     const kfShoot = input.current['n']
+    */
+    const space = false
+    const kfShoot = joystick.button
 
-    let velocity = new Vector3(0, 0, 0)
-    let cameraDirection = new Vector3()
+    let velocity = new THREE.Vector3(0, 0, 0)
+    // let cameraDirection = new THREE.Vector3()
+    let cameraDirection = new THREE.Vector3(0, 0, 0)
     camera.getWorldDirection(cameraDirection)
 
-    let forward = new Vector3()
+    // let forward = new THREE.Vector3()
+    let forward = new THREE.Vector3(0, 0, 0)
     forward.setFromMatrixColumn(camera.matrix, 0)
     forward.crossVectors(camera.up, forward)
 
-    let right = new Vector3()
+    // let right = new THREE.Vector3()
+    let right = new THREE.Vector3(0, 0, 0)
     right.setFromMatrixColumn(camera.matrix, 0)
 
     let [horizontal, vertical] = [0, 0]
 
-    if (i) {
+    if (joystick.up) {
       // w
       vertical += 1
     }
-    if (k) {
+    if (joystick.down) {
       // s
       vertical -= 1
     }
-    if (l) {
+    if (joystick.right) {
       // d
       horizontal += 1
     }
-    if (j) {
+    if (joystick.left) {
       // a
       horizontal -= 1
     }
@@ -103,15 +113,15 @@ export const Player: React.FC<{}> = () => {
     }
 
     api.velocity.set(velocity.x, stateRef.current.vel[1], velocity.z)
-    //api.rotation.set(vel)
+    // @future - next step - api.rotation.set(vel)
 
-    if (sphereRef?.current) {
+    if (sphereRef.current?.position) {
       camera.position.set(sphereRef.current.position.x, sphereRef.current.position.y + 1, sphereRef.current.position.z)
     }
 
     if (stateRef.current.jumping && stateRef.current.vel[1] < 0) {
-      if (sphereRef.current) {
-        const raycaster = new Raycaster(sphereRef.current.position, new Vector3(0, -1, 0), 0, 0.2)
+      if (sphereRef.current?.position) {
+        const raycaster = new THREE.Raycaster(sphereRef.current.position, new THREE.Vector3(0, -1, 0), 0, 0.2)
         const intersects = raycaster.intersectObjects(scene.children)
 
         if (intersects.length !== 0) {
@@ -132,7 +142,8 @@ export const Player: React.FC<{}> = () => {
     const bulletDirection = cameraDirection.clone().multiplyScalar(BULLET_SPEED)
     const bulletPosition = camera.position.clone().add(cameraDirection.clone().multiplyScalar(2))
 
-    if (mouseInput.current.left || kfShoot) {
+    if (kfShoot) {
+      // if (mouseInput.current.left || kfShoot) {
       const now = Date.now()
       if (now >= stateRef.current.timeToShoot) {
         stateRef.current.timeToShoot = now + BULLET_COOL_DOWN_TIME

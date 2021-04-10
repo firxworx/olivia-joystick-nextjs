@@ -3,13 +3,13 @@ import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Physics, usePlane, useBox, useCylinder, useSphere } from '@react-three/cannon'
 import niceColors from 'nice-color-palettes'
-import { Joystick } from '../../hooks/useJoystick'
+import { useControllerStore } from '../../stores/useControllerStore'
 
 // 😊, 😢, 🤖, 🦊, 👌🏻
 
 const Plane: React.FC<{
-  position?: [number, number, number],
-  rotation?: [number, number, number],
+  position?: [number, number, number]
+  rotation?: [number, number, number]
 }> = ({ position = [0, 0, 0], rotation = [-Math.PI / 2, 0, 0] }) => {
   const [ref] = usePlane(() => ({
     mass: 0,
@@ -19,10 +19,7 @@ const Plane: React.FC<{
   }))
 
   return (
-    <mesh
-      ref={ref}
-      receiveShadow
-    >
+    <mesh ref={ref} receiveShadow>
       <planeBufferGeometry args={[100, 100]} />
       <meshStandardMaterial attach="material" color={'orange'} />
     </mesh>
@@ -54,7 +51,7 @@ const Cube: React.FC<{}> = () => {
 
   return (
     <mesh ref={ref} castShadow receiveShadow>
-      <boxBufferGeometry args={[ 1, 1 ]} />
+      <boxBufferGeometry args={[1, 1]} />
       <meshStandardMaterial roughness={0.5} color="#f0f0f0" />
     </mesh>
   )
@@ -71,15 +68,14 @@ const Sphere: React.FC<{}> = (props) => {
   )
 }
 
-
 // WORKS - rotates
 const RotatingBox: React.FC<{}> = () => {
   const ref = useRef<THREE.Mesh>()
 
   useFrame(() => {
     if (ref.current) {
-      ref.current.rotation.x += 0.005;
-      ref.current.rotation.y += 0.0075;
+      ref.current.rotation.x += 0.005
+      ref.current.rotation.y += 0.0075
     }
   })
 
@@ -91,7 +87,7 @@ const RotatingBox: React.FC<{}> = () => {
         color={'hotpink'} // 0xfe9966 - peach
       />
     </mesh>
-  );
+  )
 }
 
 const Coins: React.FC<{ number: number }> = ({ number }) => {
@@ -103,14 +99,12 @@ const Coins: React.FC<{ number: number }> = ({ number }) => {
     mass: 1,
     args: [0.1, 0.1, 0.05, 20],
     rotation: [Math.random() - 0.5, Math.random() * 2 + 1, Math.random() - 0.5],
-    position: [Math.random() - 0.5, Math.random() * 2 + 1, Math.random() - 0.5]
-  }));
+    position: [Math.random() - 0.5, Math.random() * 2 + 1, Math.random() - 0.5],
+  }))
 
   useFrame(() =>
-    api
-      .at(Math.floor(Math.random() * number))
-      .position.set(Math.random(), Math.random() * 2, Math.random())
-  );
+    api.at(Math.floor(Math.random() * number)).position.set(Math.random(), Math.random() * 2, Math.random())
+  )
 
   return (
     <instancedMesh
@@ -120,20 +114,17 @@ const Coins: React.FC<{ number: number }> = ({ number }) => {
       // @ts-ignore
       args={[null, null, number]}
     >
-      <cylinderBufferGeometry
-        attach="geometry"
-        args={[0.1, 0.1, 0.05, 20]}
-      ></cylinderBufferGeometry>
+      <cylinderBufferGeometry attach="geometry" args={[0.1, 0.1, 0.05, 20]}></cylinderBufferGeometry>
       <meshLambertMaterial attach="material" color="gold" />
     </instancedMesh>
-  );
+  )
 }
 
 const Cubes: React.FC<{ number: number }> = ({ number }) => {
   const [ref, api] = useBox(() => ({
     mass: 1,
     args: [0.1, 0.1, 0.1],
-    position: [Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5]
+    position: [Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5],
   }))
 
   const colors = useMemo(() => {
@@ -169,14 +160,11 @@ const Cubes: React.FC<{ number: number }> = ({ number }) => {
   )
 }
 
-export const ThreeMode: React.FC<{
-  joystick: Joystick,
-  speak: (phrase: string) => void
-}> = ({ joystick, speak }) => {
+export const ThreeMode: React.FC<{}> = () => {
+  const joystick = useControllerStore((state) => state.controller)
+
   return (
-    <Canvas
-      className="w-full h-full"
-    >
+    <Canvas className="w-full h-full">
       <ambientLight />
       <pointLight position={[10, 10, 10]} castShadow />
       <Physics>
