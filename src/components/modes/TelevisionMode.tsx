@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactPlayer from 'react-player/youtube'
 import { episodes } from 'src/data/episodes'
 
-import { Joystick } from '../../hooks/useJoystick'
 import { useSpeech } from '../../hooks/useSpeech'
 import { useControllerStore } from '../../stores/useControllerStore'
 
