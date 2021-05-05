@@ -13,8 +13,8 @@ import { useControllerStore } from '../stores/useControllerStore'
 const modes = [
   { name: 'Television Mode', component: TelevisionMode },
   { name: 'Speech Mode', component: SpeechMode },
-  { name: 'Three Fun Mode', component: ThreeFunMode },
-  { name: 'Three Mode Two', component: ThreeMode2 },
+  // { name: 'Three Fun Mode', component: ThreeFunMode },
+  // { name: 'Three Mode Two', component: ThreeMode2 },
 ]
 
 export default function Home() {
