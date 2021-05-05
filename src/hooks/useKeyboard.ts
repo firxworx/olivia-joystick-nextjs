@@ -42,7 +42,7 @@ export const useKeyboard = (onKeyboardChange: (status: KeyboardNavigation) => vo
 
   const keyupHandler = useCallback((event: KeyboardEvent) => {
     const { key } = event
-    console.log(key)
+    // console.log(key)
 
     if (
       key === 'ArrowUp' ||

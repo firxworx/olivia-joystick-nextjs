@@ -4,7 +4,7 @@ import { GridLayout } from '../components/GridLayout'
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
 import { TelevisionMode } from '../components/modes/TelevisionMode'
 import { SpeechMode } from '../components/modes/SpeechMode'
-import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
+import { useKeyboard, KeyboardNavigation, initialKeyboardNavigationState } from '../hooks/useKeyboard'
 import { useSpeech } from '../hooks/useSpeech'
 import { ThreeFunMode } from '../components/modes/ThreeFunMode'
 import { ThreeMode2 } from '../components/modes/ThreeMode2'
@@ -17,7 +17,7 @@ const modes = [
   // { name: 'Three Mode Two', component: ThreeMode2 },
 ]
 
-export default function Home() {
+export default function IndexPage() {
   const [currentMode, setCurrentMode] = useState(0)
 
   const [joystick, setJoystick] = useState<Joystick>(initialJoystickState)
@@ -76,11 +76,5 @@ export default function Home() {
     }
   }, [joystick.altButton, keyboard.shift])
 
-  const CurrentMode = modes[currentMode].component
-
-  return (
-    <GridLayout>
-      <CurrentMode />
-    </GridLayout>
-  )
+  return <GridLayout>{modes[currentMode].component({})}</GridLayout>
 }
