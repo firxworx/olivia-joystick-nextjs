@@ -6,10 +6,15 @@ import { TelevisionMode } from '../components/modes/TelevisionMode'
 import { SpeechMode } from '../components/modes/SpeechMode'
 import { initialKeyboardNavigationState, KeyboardNavigation, useKeyboard } from '../hooks/useKeyboard'
 import { useSpeech } from '../hooks/useSpeech'
+import { ThreeFunMode } from '../components/modes/ThreeFunMode'
+import { ThreeMode2 } from '../components/modes/ThreeMode2'
+import { useControllerStore } from '../stores/useControllerStore'
 
 const modes = [
   { name: 'Television Mode', component: TelevisionMode },
   { name: 'Speech Mode', component: SpeechMode },
+  // { name: 'Three Fun Mode', component: ThreeFunMode },
+  // { name: 'Three Mode Two', component: ThreeMode2 },
 ]
 
 export default function Home() {
@@ -40,7 +45,23 @@ export default function Home() {
       button: joystick.button || keyboard.space,
       altButton: joystick.altButton || keyboard.shift,
     }
-  }, [joystick, keyboard])
+  }, [
+    joystick.up,
+    joystick.down,
+    joystick.left,
+    joystick.right,
+    joystick.button,
+    joystick.altButton,
+    keyboard.up,
+    keyboard.down,
+    keyboard.left,
+    keyboard.right,
+    keyboard.shift,
+    keyboard.space,
+  ])
+
+  const updateControllerState = useControllerStore((state) => state.updateControllerState)
+  updateControllerState(combinedControl)
 
   const handleNextMode = () => {
     const newModeIndex = (currentMode + 1) % modes.length
@@ -50,16 +71,16 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (combinedControl.altButton) {
+    if (joystick.altButton || keyboard.shift) {
       handleNextMode()
     }
-  }, [combinedControl.altButton])
+  }, [joystick.altButton, keyboard.shift])
 
   const CurrentMode = modes[currentMode].component
 
   return (
     <GridLayout>
-      <CurrentMode joystick={combinedControl} speak={speak} />
+      <CurrentMode />
     </GridLayout>
   )
 }

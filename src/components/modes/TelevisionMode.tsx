@@ -1,57 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactPlayer from 'react-player/youtube'
+import { episodes } from 'src/data/episodes'
 
-import { Joystick } from '../../hooks/useJoystick'
+import { useSpeech } from '../../hooks/useSpeech'
+import { useControllerStore } from '../../stores/useControllerStore'
 
-const screens = [
-  'https://www.youtube.com/watch?v=tMBH44R2-rY', // Sesame Street - Episode 4323
-  'https://www.youtube.com/watch?v=iBdTVblUgQQ', // sesame
-  'https://www.youtube.com/watch?v=oyClviB1xd8', // sesame search for elmo's costume
-  'https://www.youtube.com/watch?v=IA-LQzAgbqA', // heman first episode pilot
-  'https://www.youtube.com/watch?v=bNxFe4P1_WY', // hercules s1e10
-  'https://www.youtube.com/watch?v=sS3kFOmj9kQ', // gummy bears s4 e03
-  'https://www.youtube.com/watch?v=oyClviB1xd8', // sesame search for elmo's costume
-  'https://www.youtube.com/watch?v=z2UYkI1sk4Q', // masha what a wonderful game
-  'https://www.youtube.com/watch?v=VOd381jot0A', // gummy bears s3 06
-  'https://www.youtube.com/watch?v=WkkgJkNVOGY', // sesame elmos new band
+const screens = [...episodes[0]]
 
-  'https://www.youtube.com/watch?v=OpIT3t3_t7A', // winnie the pooh and a day for eeyore
-  'https://www.youtube.com/watch?v=S8jfN66vYa0', // little bear to grandma's house
-  'https://www.youtube.com/watch?v=KLrAwZrXJC8', // sesame elmo teaches abby to pretend
-
-  /*
-  'https://www.youtube.com/watch?v=VkQkg8jFbA4',
-  'https://www.youtube.com/watch?v=HsPgLCcEXLI',
-  'https://www.youtube.com/watch?v=hSwF40YgMxg', // masha peace and quiet
-  'https://www.youtube.com/watch?v=fzZaXbGwv-o', // ghostbusters pilot
-  'https://www.youtube.com/watch?v=MDF8sAnY92Q', // masha girl power
-  'https://www.youtube.com/watch?v=eeVDXCWwmyE', // mr rogers
-  'https://www.youtube.com/watch?v=oyClviB1xd8', // sesame search for elmos costume
-  */
-  /*
-  'https://www.youtube.com/watch?v=DBGR4fMrEzI', // Team Umizoomi full Episode Cap 13
-  'https://www.youtube.com/watch?v=cZ2iSwsFqBc', // Wallykazam 11 full Episode
-  'https://www.youtube.com/watch?v=z46HPYa7WD4', // Dora Halloween
-  'https://www.youtube.com/watch?v=8fKNkiJl_Ro', // Looney Tunes Summer Vacation
-  'https://www.youtube.com/watch?v=2nxE4HTVzQs', // Masha and the Bear - Winter with Masha (50)
-  'https://www.youtube.com/watch?v=HfEVEGf1A8Q', // Spookiz - Movie
-  'https://www.youtube.com/watch?v=T53yDxrnLMY', // Dora - Swiper the Explorer
-  'https://www.youtube.com/watch?v=c7PLTjUkdW0', // Masha - Hooray its Childrens
-  */
-  /*
-  'https://www.youtube.com/watch?v=bPjua3v4Psw', // dora - star mountain
-  'https://www.youtube.com/watch?v=Edr6_-L3bi4', // scooby doo - Scaredy Cats Scooby & Shaggy
-  'https://www.youtube.com/watch?v=HlhMayx8f7c', // curious george - curious george discovers the poles
-  'https://www.youtube.com/watch?v=hRTcdBJsQXE', // masha - furry friends
-  'https://www.youtube.com/watch?v=L50l3xJlyXQ', // dora - start catcher
-  'https://www.youtube.com/watch?v=Ik_QP4oA_Hg', // curious george - maple monkey madness
-  */
-]
-
-export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: string) => void }> = ({
-  joystick,
-  speak,
-}) => {
+export const TelevisionMode: React.FC<{}> = () => {
   // const [ userInteracted, setUserInteracted ] = useState(false)
   const playerRef = useRef<ReactPlayer>(null)
 
@@ -61,7 +17,7 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
   const [currentScreen, setCurrentScreen] = useState(0)
   const [screenProgress, setScreenProgress] = useState<Array<number>>(Array.from({ length: screens.length }, () => 0))
 
-  // const [ joystick, setJoystick ] = useState<Joystick>(initialJoystickState)
+  const speak = useSpeech()
 
   const handleNext = () => {
     setCurrentScreen((currentScreen + 1) % screens.length)
@@ -73,17 +29,11 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
     setIsReady(false)
   }
 
-  /*
-  const handleJoystickChange = useCallback((js: Joystick) => {
-    setJoystick({ ...js })
-  }, [])
-  */
-
   const handlePlayerReady = (position: number) => {
     setIsReady(true)
   }
 
-  // useJoystick(handleJoystickChange)
+  const joystick = useControllerStore((state) => state.controller)
 
   useEffect(() => {
     if (joystick.button) {
@@ -139,9 +89,6 @@ export const TelevisionMode: React.FC<{ joystick: Joystick; speak: (phrase: stri
 
   return (
     <>
-      {/*
-      <h2>{`${screens[currentScreen]} ... ${screenProgress[currentScreen]}`}</h2>
-      */}
       <ReactPlayer
         ref={playerRef}
         url={screens[currentScreen]}

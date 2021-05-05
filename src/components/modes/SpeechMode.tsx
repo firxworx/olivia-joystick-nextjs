@@ -1,7 +1,8 @@
 import clsx from 'clsx'
 import React, { useState, useEffect } from 'react'
 
-import { Joystick } from '../../hooks/useJoystick'
+import { useSpeech } from '../../hooks/useSpeech'
+import { useControllerStore } from '../../stores/useControllerStore'
 import { VectorIcon } from '../VectorIcon'
 
 const phrases: Array<{
@@ -14,10 +15,7 @@ const phrases: Array<{
   { icon: 'smile', phrase: 'OLIVIA' },
 ]
 
-export const SpeechMode: React.FC<{
-  joystick: Joystick
-  speak: (phrase: string) => void
-}> = ({ joystick, speak }) => {
+export const SpeechMode: React.FC<{}> = () => {
   const [currentPhrase, setCurrentPhrase] = useState(0)
 
   const handleNext = () => {
@@ -28,8 +26,10 @@ export const SpeechMode: React.FC<{
     setCurrentPhrase((currentPhrase - 1 + phrases.length) % phrases.length)
   }
 
+  const speak = useSpeech()
+  const joystick = useControllerStore((state) => state.controller)
+
   useEffect(() => {
-    console.log(`speechmode joystick ${JSON.stringify(joystick, null, 2)}`)
     if (joystick.button) {
       speak(phrases[currentPhrase].phrase)
     }
@@ -42,8 +42,6 @@ export const SpeechMode: React.FC<{
       handleNext()
     }
   }, [joystick])
-
-  // console.log(`current phrase ${currentPhrase} [${phrases.join(', ')}]`)
 
   return (
     <div className="bg-gray-50 min-h-screen min-w-full flex justify-center items-center">
