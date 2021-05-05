@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useBox, BodyProps } from '@react-three/cannon'
+// import { useBox, BodyProps } from 'use-cannon'
 import niceColors from 'nice-color-palettes'
 
 const paletteIndex = 8
@@ -29,18 +30,18 @@ export const Cube: React.FC<BodyProps> = (props) => {
 export const Targets: React.FC<{}> = () => {
   return (
     <>
-      <Cube position={[0, 0, -5]} />
-      <Cube position={[-0.6, 0, -5]} />
-      <Cube position={[0.6, 0, -5]} />
+      {/* og pyramid */}
+      <Cube position={[0, 1, -5]} />
       <Cube position={[-0.3, 0.5, -5]} />
       <Cube position={[0.3, 0.5, -5]} />
-      <Cube position={[0, 1, -5]} />
-
+      <Cube position={[-0.6, 0, -5]} /> {/* bottom left */}
+      <Cube position={[0, 0, -5]} /> {/* bottom middle */}
+      <Cube position={[0.6, 0, -5]} /> {/* bottom right */}
+      {/* stack */}
       <Cube position={[-5, 0, -5]} />
       <Cube position={[-5, 0.5, -5]} />
       <Cube position={[-5, 1, -5]} />
       <Cube position={[-5, 1.5, -5]} />
-
       {/*
       <Cube position={[0, 0, 5]} type={'Static'} />
       <Cube position={[0, 0, 5.5]} type={'Static'} />

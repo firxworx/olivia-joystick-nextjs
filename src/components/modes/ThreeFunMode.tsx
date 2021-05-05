@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { Html } from '@react-three/drei' // Sky, Cloud, Stars, OrbitControls
 import { Canvas } from '@react-three/fiber'
 import { Physics, usePlane } from '@react-three/cannon' // useBox, useCylinder
+// import { Physics, usePlane } from 'use-cannon'
 
 import { Targets } from './3d/FunMode/Targets'
 import { Player } from './3d/FunMode/Player'
@@ -66,6 +67,7 @@ const Birds: React.FC<{}> = () => {
   )
 }
 
+// {/* fackin birds causing an issue when things change */}
 export const ThreeFunMode: React.FC<{}> = () => {
   return (
     <Canvas
@@ -85,7 +87,6 @@ export const ThreeFunMode: React.FC<{}> = () => {
       <Suspense fallback={<Html center>Loading.</Html>}>
         <Physics gravity={[0, -18, 0]} tolerance={0} iterations={50} broadphase={'SAP'}>
           <Targets />
-          {/* fackin birds causing an issue when things change */}
           <Birds />
           <Player />
           <GroundPlane />
