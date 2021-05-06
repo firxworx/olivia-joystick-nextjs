@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 
 import { GridLayout } from '../components/GridLayout'
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
@@ -22,8 +22,6 @@ export default function IndexPage() {
 
   const [joystick, setJoystick] = useState<Joystick>(initialJoystickState)
   const [keyboard, setKeyboard] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
-
-  const speak = useSpeech()
 
   const handleJoystickChange = useCallback((joystickState: Joystick) => {
     setJoystick({ ...joystickState })
@@ -63,6 +61,8 @@ export default function IndexPage() {
   const updateControllerState = useControllerStore((state) => state.updateControllerState)
   updateControllerState(combinedControl)
 
+  const speak = useSpeech()
+
   const handleNextMode = () => {
     const newModeIndex = (currentMode + 1) % modes.length
 
@@ -76,5 +76,12 @@ export default function IndexPage() {
     }
   }, [joystick.altButton, keyboard.shift])
 
-  return <GridLayout>{modes[currentMode].component({})}</GridLayout>
+  const CurrentMode = modes[currentMode].component
+
+  return (
+    <GridLayout>
+      <CurrentMode />
+      {/*modes[currentMode].component({})*/}
+    </GridLayout>
+  )
 }
