@@ -1,13 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { AppProps } from 'next/app' // AppContext
 import Head from 'next/head'
-import { SpeechContextProvider } from 'src/components/context/Speech'
+
+import '../styles/tailwind.css'
 
 import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
 import { useKeyboard, KeyboardNavigation, initialKeyboardNavigationState } from '../hooks/useKeyboard'
 import { useControllerStore } from '../stores/useControllerStore'
-
-import '../styles/tailwind.css'
+import { SpeechContextProvider } from 'src/components/context/Speech'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [joystick, setJoystick] = useState<Joystick>(initialJoystickState)

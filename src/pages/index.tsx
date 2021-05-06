@@ -4,8 +4,8 @@ import { GridLayout } from '../components/GridLayout'
 import { TelevisionMode } from '../components/modes/TelevisionMode'
 import { SpeechMode } from '../components/modes/SpeechMode'
 import { useSpeech } from '../hooks/useSpeech'
-import { ThreeFunMode } from '../components/modes/ThreeFunMode'
-import { ThreeMode2 } from '../components/modes/ThreeMode2'
+// import { ThreeFunMode } from '../components/modes/ThreeFunMode'
+// import { ThreeMode2 } from '../components/modes/ThreeMode2'
 import { useControllerStore } from '../stores/useControllerStore'
 
 const modes = [
@@ -22,10 +22,10 @@ export default function IndexPage() {
   const controller = useControllerStore((state) => state.controller)
 
   const handleNextMode = () => {
-    const newModeIndex = (currentMode + 1) % modes.length
+    const nextModeIndex = (currentMode + 1) % modes.length
 
-    speak(`SWITCH, ${modes[newModeIndex].name}`)
-    setCurrentMode(newModeIndex)
+    speak(`SWITCH, ${modes[nextModeIndex].name}`)
+    setCurrentMode(nextModeIndex)
   }
 
   useEffect(() => {
