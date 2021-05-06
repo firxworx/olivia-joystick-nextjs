@@ -3,6 +3,7 @@ import {
   // AppContext,
 } from 'next/app'
 import Head from 'next/head'
+import { SpeechContextProvider } from 'src/components/context/Speech'
 
 import '../styles/tailwind.css'
 
@@ -13,7 +14,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Olivia Joystick</title>
         <link rel="icon" href="favicon.ico" />
       </Head>
-      <Component {...pageProps} />
+      <SpeechContextProvider>
+        <Component {...pageProps} />
+      </SpeechContextProvider>
     </>
   )
 }
