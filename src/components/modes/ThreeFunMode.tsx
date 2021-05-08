@@ -69,6 +69,7 @@ const Birds: React.FC<{}> = () => {
 
 // {/* fackin birds causing an issue when things change */}
 export const ThreeFunMode: React.FC<{}> = () => {
+  // the Player component listens for the keyboard and handles movement
   return (
     <Canvas
       // camera={{ position: [0.5, 3, 4.5], fov: 50 }}
@@ -87,7 +88,7 @@ export const ThreeFunMode: React.FC<{}> = () => {
       <Suspense fallback={<Html center>Loading.</Html>}>
         <Physics gravity={[0, -18, 0]} tolerance={0} iterations={50} broadphase={'SAP'}>
           <Targets />
-          <Birds />
+          {/* <Birds /> */}
           <Player />
           <GroundPlane />
         </Physics>
