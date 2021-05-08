@@ -1,13 +1,11 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { GridLayout } from '../components/GridLayout'
-import { useJoystick, Joystick, initialJoystickState } from '../hooks/useJoystick'
 import { TelevisionMode } from '../components/modes/TelevisionMode'
 import { SpeechMode } from '../components/modes/SpeechMode'
-import { useKeyboard, KeyboardNavigation, initialKeyboardNavigationState } from '../hooks/useKeyboard'
 import { useSpeech } from '../hooks/useSpeech'
-import { ThreeFunMode } from '../components/modes/ThreeFunMode'
-import { ThreeMode2 } from '../components/modes/ThreeMode2'
+// import { ThreeFunMode } from '../components/modes/ThreeFunMode'
+// import { ThreeMode2 } from '../components/modes/ThreeMode2'
 import { useControllerStore } from '../stores/useControllerStore'
 
 const modes = [
@@ -20,61 +18,28 @@ const modes = [
 export default function IndexPage() {
   const [currentMode, setCurrentMode] = useState(0)
 
-  const [joystick, setJoystick] = useState<Joystick>(initialJoystickState)
-  const [keyboard, setKeyboard] = useState<KeyboardNavigation>(initialKeyboardNavigationState)
-
   const speak = useSpeech()
-
-  const handleJoystickChange = useCallback((joystickState: Joystick) => {
-    setJoystick({ ...joystickState })
-  }, [])
-
-  const handleKeyboardChange = useCallback((keyboardState: KeyboardNavigation) => {
-    setKeyboard({ ...keyboardState })
-  }, [])
-
-  useJoystick(handleJoystickChange)
-  useKeyboard(handleKeyboardChange)
-
-  const combinedControl: Joystick = useMemo(() => {
-    return {
-      up: joystick.up || keyboard.up,
-      down: joystick.down || keyboard.down,
-      left: joystick.left || keyboard.left,
-      right: joystick.right || keyboard.right,
-      button: joystick.button || keyboard.space,
-      altButton: joystick.altButton || keyboard.shift,
-    }
-  }, [
-    joystick.up,
-    joystick.down,
-    joystick.left,
-    joystick.right,
-    joystick.button,
-    joystick.altButton,
-    keyboard.up,
-    keyboard.down,
-    keyboard.left,
-    keyboard.right,
-    keyboard.shift,
-    keyboard.space,
-  ])
-
-  const updateControllerState = useControllerStore((state) => state.updateControllerState)
-  updateControllerState(combinedControl)
+  const controller = useControllerStore((state) => state.controller)
 
   const handleNextMode = () => {
-    const newModeIndex = (currentMode + 1) % modes.length
+    const nextModeIndex = (currentMode + 1) % modes.length
 
-    speak(`SWITCH, ${modes[newModeIndex].name}`)
-    setCurrentMode(newModeIndex)
+    speak(`SWITCH, ${modes[nextModeIndex].name}`)
+    setCurrentMode(nextModeIndex)
   }
 
   useEffect(() => {
-    if (joystick.altButton || keyboard.shift) {
+    if (controller.altButton) {
       handleNextMode()
     }
-  }, [joystick.altButton, keyboard.shift])
+  }, [controller.altButton])
 
-  return <GridLayout>{modes[currentMode].component({})}</GridLayout>
+  const CurrentMode = modes[currentMode].component
+
+  return (
+    <GridLayout>
+      <CurrentMode />
+      {/*modes[currentMode].component({})*/}
+    </GridLayout>
+  )
 }

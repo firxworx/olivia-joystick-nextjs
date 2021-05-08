@@ -7,6 +7,16 @@
  */
 export const episodes = [
   [
+    'https://www.youtube.com/watch?v=p18TP00FT6g', // polly sugar rush
+    'https://www.youtube.com/watch?v=7WztNLni6JU', // curious george
+    'https://www.youtube.com/watch?v=mTK-9_nJUdc', // polly swimsational
+    'https://www.youtube.com/watch?v=t_nhj1w9eaQ', // masha sabre tooth bear
+    'https://www.youtube.com/watch?v=uoQeFeAqABI', // curious george invisible sound
+    'https://www.youtube.com/watch?v=0V9Xagiu0iQ', // masha masha's wonderland
+    'https://www.youtube.com/watch?v=3m71IHs2qhQ', // dora's first trip
+    'https://www.youtube.com/watch?v=LPFPDfJbRqw', // curious george zeros to donuts
+  ],
+  [
     'https://www.youtube.com/watch?v=EprdGUOXUoc', // polly pocket
     'https://www.youtube.com/watch?v=T9vSvGh2_2M', // dora's dance show
     'https://www.youtube.com/watch?v=zNK-90VGqXI', // strawberry shortcake
