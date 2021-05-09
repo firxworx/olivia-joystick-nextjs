@@ -40,6 +40,12 @@ export const TelevisionMode: React.FC<{}> = () => {
 
   useEffect(() => {
     if (joystick.button) {
+      if (isPlayMode) {
+        speak('PAUSE')
+      } else {
+        speak('PLAY')
+      }
+
       setIsPlayMode(!isPlayMode)
     }
 
