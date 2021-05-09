@@ -22,7 +22,6 @@
     "@tailwindcss/typography": "^0.4.0",
     "cannon-es": "^0.17.0",
     "clsx": "^1.1.1",
-    "framer-motion": "^4.1.13",
     "lerp": "^1.0.3",
     "next": "10.2.0",
     "nice-color-palettes": "^3.0.0",
