@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useTransition, animated } from 'react-spring'
 import YouTubePlayer from 'react-player/youtube'
 
@@ -9,11 +9,12 @@ import { useControllerStore } from '../../stores/useControllerStore'
 
 const screens = [...episodes[0]]
 
-// react-player lessons:
-// - seekTo() is best called from the onStart callback/handler vs. onReady
-
+/**
+ * TelevisionMode cycles through an array of YouTube video URL's based on up/down inputs.
+ * The action button controls play/pause behaviour.
+ */
 export const TelevisionMode: React.FC<{}> = () => {
-  const playerRef = useRef<YouTubePlayer>(null)
+  const playerRef = useRef<YouTubePlayer | null>(null)
 
   const [isPlayMode, setIsPlayMode] = useState(true)
 
@@ -25,22 +26,21 @@ export const TelevisionMode: React.FC<{}> = () => {
   const speak = useSpeech()
   const joystick = useControllerStore((state) => state.controller)
 
-  const handleNext = () => {
-    setTransitionDirection('up')
-    setCurrentScreen((currentScreen + 1) % screens.length)
-  }
-
-  const handleBack = () => {
-    setTransitionDirection('down')
-    setCurrentScreen((currentScreen - 1 + screens.length) % screens.length)
-  }
-
+  // seekTo() is more reliable when called from the player onStart vs. onReady callback
   const handlePlayerStarted = () => {
-    const saved = screenProgress[currentScreen]
-    if (saved > 0) {
-      playerRef.current?.seekTo(saved)
+    if (screenProgress[currentScreen] > 0) {
+      playerRef.current?.seekTo(screenProgress[currentScreen])
     }
   }
+
+  // use a ref callback on the player to prevent playerRef.current from becoming null
+  // this enables reliable playerRef.current.getCurrentTime() calls to save an
+  // outgoing screen's current playback time even with transitions
+  const handlePlayerRef = useCallback((node: YouTubePlayer | null) => {
+    if (node) {
+      playerRef.current = node
+    }
+  }, [])
 
   useEffect(() => {
     if (joystick.button) {
@@ -67,12 +67,14 @@ export const TelevisionMode: React.FC<{}> = () => {
 
     if (joystick.up) {
       speak('UP')
-      handleNext()
+      setTransitionDirection('up')
+      setCurrentScreen((currentScreen + 1) % screens.length)
     }
 
     if (joystick.down) {
       speak('DOWN')
-      handleBack()
+      setTransitionDirection('down')
+      setCurrentScreen((currentScreen - 1 + screens.length) % screens.length)
     }
   }, [joystick.button, joystick.up, joystick.down, joystick.left, joystick.right])
 
@@ -82,7 +84,11 @@ export const TelevisionMode: React.FC<{}> = () => {
       opacity: 0,
       transform: `translate3d(0px, ${transitionDirection === 'up' ? '100%' : '-100%'}, 0px)`,
     },
-    enter: { opacity: 1, transform: 'translate3d(0px, 0%, 0px)' },
+    enter: {
+      opacity: 1,
+      transform: 'translate3d(0px, 0%, 0px)',
+      // onRest: handlePlayerStarted,
+    },
     leave: {
       opacity: 0,
       position: 'absolute',
@@ -95,7 +101,7 @@ export const TelevisionMode: React.FC<{}> = () => {
       {transitions((styles, currentScreenIndex) => (
         <animated.div className="w-full h-full" style={{ ...styles }}>
           <YouTubePlayer
-            ref={playerRef}
+            ref={handlePlayerRef}
             url={screens[currentScreenIndex]}
             playing={isPlayMode}
             width="100%"
