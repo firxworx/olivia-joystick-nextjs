@@ -75,6 +75,7 @@ export const ThreeFunMode: React.FC<{}> = () => {
       // camera={{ position: [0.5, 3, 4.5], fov: 50 }}
       // camera={{ position: [0, 0, 35] }}
       // camera={{ position: [3, 8, -4] }}
+      camera={{ position: [0, 0, 0], fov: 100 }}
       // @ts-ignore
       shadowMap
     >
