@@ -1,18 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { useSphere } from '@react-three/cannon'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useFrame, useThree, useLoader } from '@react-three/fiber'
+// import { PositionalAudio } from '@react-three/drei'
 
 import { Projectile } from './Projectile'
 import { useControllerStore } from '../../../../stores/useControllerStore'
+import useSound from 'use-sound'
 
 const SPEED = 5
 const PROJECTILE_SPEED = 15
 const PROJECTILE_COOL_DOWN_TIME = 300
+const PROJECTILE_MAX_COUNT = 10
 const JUMP_SPEED = 5
 const JUMP_COOL_DOWN_TIME = 400
 
 const ANGULAR_SPEED = 2
+
+const BASE_PATH = '/olivia-joystick-nextjs'
 
 // const accel = 0.001
 // const rotateSpeed = 0.002
@@ -26,12 +31,17 @@ export interface Projectile {
 
 const yAxisNormalizedVector = new THREE.Vector3(0, 1, 0).normalize()
 
+// consider this approach for when using the PositionalAudio
+// useLoader.preload(THREE.AudioLoader, 'assets/sfx/shoot.wav')
+
 // the player is represented by a sphere w/ fixed rotation (i.e. prevented from rotating)
 export const Player: React.FC<{}> = () => {
+  const [playSfxShoot] = useSound(`${BASE_PATH}/assets/sfx/toss.ogg`)
+
   const [sphereRef, api] = useSphere(() => ({
     fixedRotation: true,
     mass: 100,
-    position: [0, 1, 0],
+    position: [0, 8, 0],
     args: 0.2,
     material: {
       friction: 0,
@@ -130,21 +140,23 @@ export const Player: React.FC<{}> = () => {
       }
     }
 
-    // handle projectiles
-    const projectileDirection = cameraDirection.clone().multiplyScalar(PROJECTILE_SPEED)
-    const projectilePosition = camera.position.clone().add(cameraDirection.clone().multiplyScalar(2))
-
+    // handle shooting projectiles
     if (shoot) {
+      const projectileDirection = cameraDirection.clone().multiplyScalar(PROJECTILE_SPEED)
+      const projectilePosition = camera.position.clone().add(cameraDirection.clone().multiplyScalar(2))
+
       const now = Date.now()
       if (now >= stateRef.current.timeToShoot) {
+        playSfxShoot()
+
         stateRef.current.timeToShoot = now + PROJECTILE_COOL_DOWN_TIME
-        setProjectiles((projectiles) => [
-          ...projectiles,
+        setProjectiles((prev) => [
           {
             id: now,
             position: [projectilePosition.x, projectilePosition.y, projectilePosition.z],
             forward: [projectileDirection.x, projectileDirection.y, projectileDirection.z],
           },
+          ...(prev.length > PROJECTILE_MAX_COUNT ? prev.slice(0, PROJECTILE_MAX_COUNT) : prev),
         ])
       }
     }
