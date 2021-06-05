@@ -53,3 +53,7 @@ Olivia's mother helped re-jig the controller to move the buttons to the higher o
 Add a new button to the rig, will name it 'altButton' for now.
 
 Olivia's improving dexterity gives confidence that she will be able to use the new input.
+
+### 2021-05-19
+
+Erin Oak kids, assistive devices team.
