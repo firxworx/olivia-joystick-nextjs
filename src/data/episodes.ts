@@ -7,6 +7,16 @@
  */
 export const episodes = [
   [
+    'https://www.youtube.com/watch?v=-PD1qZjaHO8', // barbie dreamhose s2 e9
+    'https://www.youtube.com/watch?v=YszS9RIxJM0', // masha queen of the forest
+    'https://www.youtube.com/watch?v=iD07iTS9kmA', // curious george back at the farm
+    'https://www.youtube.com/watch?v=hSwF40YgMxg', // masha peace and quiet
+    'https://www.youtube.com/watch?v=qS5WPJ_UdxA', // peppa goes to strawberry farm
+    'https://www.youtube.com/watch?v=gyOl2WChZDg', // dora in troll land
+    'https://www.youtube.com/watch?v=0WyU0BUapDU', // family guy s15e3 (haha)
+    'https://www.youtube.com/watch?v=KPUSHGr2-_Y', // curious george water to ducks
+  ],
+  [
     'https://www.youtube.com/watch?v=p18TP00FT6g', // polly sugar rush
     'https://www.youtube.com/watch?v=7WztNLni6JU', // curious george
     'https://www.youtube.com/watch?v=mTK-9_nJUdc', // polly swimsational
