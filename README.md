@@ -48,14 +48,18 @@ To compile GLTF's into a compressed binary format:
 
 ```sh
 npx gltf-pipeline -i model.gltf -o model.glb --draco.compressionLevel=7
-npx gltfjsx model.glb
+
+# for convenient copy-and-pasting (a lot of auto-converted sketchfab models have the filename 'scene.gltf')
+npx gltf-pipeline -i scene.gltf -o model.glb --draco.compressionLevel=7
 ```
 
-To generate a JSX/TSX component (note: the code will likely need to be customized by hand):
+To generate a JSX/TSX component (`-t` flag is for TypeScript):
 
 ```sh
 npx gltfjsx model.glb -t
 ```
+
+Note the code will likely need to be customized by hand.
 
 Refer to <https://github.com/pmndrs/gltfjsx> for docs regarding the various features/flags.
 

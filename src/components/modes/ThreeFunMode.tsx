@@ -10,10 +10,13 @@ import { Physics, usePlane } from '@react-three/cannon' // useBox, useCylinder
 import { Targets } from './3d/FunMode/Targets'
 import { Player } from './3d/FunMode/Player'
 import { BASE_URL } from 'src/constants/app'
+// import { Cow } from '../models/animals/Cow'
 
 // dynamic() is the nextjs way to go for loading these assets
-const Bird = dynamic(() => import('./3d/Bird'), { ssr: false })
-const MountainScene = dynamic(() => import('../models/scenes/MountainScene'), { ssr: false })
+// const Bird = dynamic(() => import('./3d/Bird'), { ssr: false })
+// const MountainScene = dynamic(() => import('../models/scenes/MountainScene'), { ssr: false })
+const CuteCat = dynamic(() => import('../models/animals/CuteCat'), { ssr: false })
+const Puppy = dynamic(() => import('../models/animals/Puppy'), { ssr: false })
 
 export const GroundPlane = () => {
   const [ref, api] = usePlane(() => ({
@@ -72,6 +75,8 @@ export const ThreeFunMode: React.FC<{}> = () => {
           <Targets />
           <Player />
           {/* <MountainScene /> */}
+          <CuteCat position={[2, 0, 3]} />
+          <Puppy position={[10, 0, -5]} />
           <GroundPlane />
         </Physics>
       </Suspense>
