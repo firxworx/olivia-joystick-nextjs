@@ -12,28 +12,27 @@ import { useControllerStore } from '../../stores/useControllerStore'
 const screens = [...episodes[0]]
 
 interface TelevisionModeState extends State {
-  currentScreen: number
-  updateCurrentScreen: (update: number) => void
+  screen: number
+  updateScreen: (update: number) => void
 
-  screenProgress: Array<number>
-  updateScreenProgress: (update: number) => void
+  progress: Array<number>
+  updateProgress: (update: number) => void
 }
 
 const store = (set: any) => ({
-  currentScreen: 0,
-  updateCurrentScreen: (update: number) => {
-    set({ currentScreen: update })
+  screen: 0,
+  updateScreen: (screen: number) => {
+    set({ screen })
   },
 
-  screenProgress: Array.from({ length: screens.length }, () => 0),
-  updateScreenProgress: (update: number) => {
+  progress: Array.from({ length: screens.length }, () => 0),
+  updateProgress: (latest: number) => {
     set((state: TelevisionModeState) => {
-      console.log(`updating screen ${state.currentScreen} progress to ${update}`)
-      const nextScreenProgressState = [...state.screenProgress]
-      nextScreenProgressState[state.currentScreen] = update
+      const nextProgressState = [...state.progress]
+      nextProgressState[state.screen] = latest
 
       return {
-        screenProgress: nextScreenProgressState,
+        progress: nextProgressState,
       }
     })
   },
@@ -45,44 +44,33 @@ const useTelevisionModeStore = create<TelevisionModeState>(store)
  * TelevisionMode cycles through an array of YouTube video URL's based on up/down inputs.
  * The action button controls play/pause behaviour.
  */
-export const TelevisionMode: React.FC<{}> = () => {
+export const TelevisionMode: React.FC = () => {
   const playerRef = useRef<YouTubePlayer | null>(null)
 
   const [isPlayMode, setIsPlayMode] = useState(true)
+  const [transitionDirection, setTransitionDirection] = useState<'UP' | 'DOWN' | undefined>(undefined)
 
-  // const [currentScreen, setCurrentScreen] = useState(0)
-  // const [screenProgress, setScreenProgress] = useState<Array<number>>(Array.from({ length: screens.length }, () => 0))
-
-  const currentScreen = useTelevisionModeStore((state) => state.currentScreen)
-  const updateCurrentScreen = useTelevisionModeStore((state) => state.updateCurrentScreen)
-
-  const screenProgress = useTelevisionModeStore(
-    useCallback((state) => state.screenProgress[currentScreen], [currentScreen])
-  )
-  const updateScreenProgress = useTelevisionModeStore((state) => state.updateScreenProgress)
-
-  // const [screenProgress, updateCurrentScreen, updateScreenProgress] = useTelevisionModeStore((state) => [
-  //   state.currentScreen,
-  //   state.updateCurrentScreen,
-  // ]) // shallow
-
-  // const [screenProgress, updateScreenProgress] = useTelevisionModeStore((state) => [
-  //   state.screenProgress[currentScreen],
-  //   state.updateScreenProgress,
-  // ])
-
-  const [transitionDirection, setTransitionDirection] = useState<'up' | 'down' | undefined>(undefined)
+  const [screen, progress, updateScreen, updateProgress] = useTelevisionModeStore((state) => [
+    state.screen,
+    state.progress[state.screen],
+    state.updateScreen,
+    state.updateProgress,
+  ])
 
   const speak = useSpeech()
   const joystick = useControllerStore((state) => state.controller)
 
   // seekTo() is more reliable when called from player onStart() vs. onReady() callback
   const handlePlayerStarted = () => {
-    // if (screenProgress[currentScreen] > 0) {
-    //   playerRef.current?.seekTo(screenProgress[currentScreen])
-    // }
-    if (screenProgress > 0) {
-      playerRef.current?.seekTo(screenProgress)
+    if (progress > 0) {
+      playerRef.current?.seekTo(progress)
+    }
+  }
+
+  // JSX.LibraryManagedAttributes<typeof YouTubePlayer, YouTubePlayer['props']['onProgress']>
+  const handleProgressUpdate = (playedSeconds: number) => {
+    if (playedSeconds) {
+      updateProgress(playedSeconds)
     }
   }
 
@@ -95,45 +83,56 @@ export const TelevisionMode: React.FC<{}> = () => {
     }
   }, [])
 
+  // handle joystick actions
   useEffect(() => {
     if (joystick.button) {
       speak(isPlayMode ? 'PAUSE' : 'PLAY')
       setIsPlayMode(!isPlayMode)
     }
 
-    if (joystick.up || joystick.down || joystick.altButton) {
+    if (joystick.up || joystick.down) {
       const currTime = playerRef.current?.getCurrentTime()
 
       if (currTime) {
-        updateScreenProgress(currTime)
-        // setScreenProgress((sp) => {
-        //   const nextState = [...sp]
-        //   nextState[currentScreen] = currTime
-        //   return nextState
-        // })
+        updateProgress(currTime)
       }
     }
 
     if (joystick.up) {
       speak('UP')
-      setTransitionDirection('up')
-      // setCurrentScreen((currentScreen + 1) % screens.length)
-      updateCurrentScreen((currentScreen + 1) % screens.length)
+      setTransitionDirection('UP')
+      updateScreen((screen + 1) % screens.length)
     }
 
     if (joystick.down) {
       speak('DOWN')
-      setTransitionDirection('down')
-      // setCurrentScreen((currentScreen - 1 + screens.length) % screens.length)
-      updateCurrentScreen((currentScreen - 1 + screens.length) % screens.length)
+      setTransitionDirection('DOWN')
+      updateScreen((screen - 1 + screens.length) % screens.length)
     }
-  }, [joystick.button, joystick.up, joystick.down, joystick.left, joystick.right])
+  }, [joystick.button, joystick.up, joystick.down])
 
-  const transitions = useTransition(currentScreen, {
+  // save screen progress on component unmount (when parent mode changes)
+  // @see https://reactjs.org/blog/2020/08/10/react-v17-rc.html#effect-cleanup-timing
+  // useEffect(() => {
+  //   const player = playerRef.current
+
+  //   return () => {
+  //     if (player) {
+  //       const currTime = player.getCurrentTime()
+  //       console.log('unmount', currTime)
+
+  //       if (currTime) {
+  //         updateProgress(currTime)
+  //       }
+  //     }
+  //   }
+  // }, [playerRef.current])
+
+  const transitions = useTransition(screen, {
     config: { duration: 500 },
     from: {
       opacity: 0,
-      transform: `translate3d(0px, ${transitionDirection === 'up' ? '100%' : '-100%'}, 0px)`,
+      transform: `translate3d(0px, ${transitionDirection === 'UP' ? '100%' : '-100%'}, 0px)`,
     },
     enter: {
       opacity: 1,
@@ -143,17 +142,17 @@ export const TelevisionMode: React.FC<{}> = () => {
     leave: {
       opacity: 0,
       position: 'absolute',
-      transform: `translate3d(0px, ${transitionDirection === 'up' ? '-100%' : '100%'}, 0px)`,
+      transform: `translate3d(0px, ${transitionDirection === 'UP' ? '-100%' : '100%'}, 0px)`,
     },
   })
 
   return (
     <>
-      {transitions((styles, currentScreenIndex) => (
+      {transitions((styles, screenIndex) => (
         <animated.div className="w-full h-full" style={{ ...styles }}>
           <YouTubePlayer
             ref={handlePlayerRef}
-            url={screens[currentScreenIndex]}
+            url={screens[screenIndex]}
             playing={isPlayMode}
             width="100%"
             height="100%"
@@ -166,6 +165,7 @@ export const TelevisionMode: React.FC<{}> = () => {
               },
             }}
             onStart={handlePlayerStarted}
+            onProgress={({ playedSeconds }) => handleProgressUpdate(playedSeconds)}
           />
         </animated.div>
       ))}
