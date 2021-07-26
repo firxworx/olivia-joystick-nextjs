@@ -7,6 +7,38 @@
  */
 export const episodes = [
   [
+    'https://www.youtube.com/watch?v=1GNt1nVi-7I', // baby winky comes home
+    'https://www.youtube.com/watch?v=QYiPFJESnjc', // Bo On the GO! - Bo and the Shake Maker
+    'https://www.youtube.com/watch?v=Za6zh9aVIMY', // Blippi Makes Fruit Popsicles!
+    'https://www.youtube.com/watch?v=8FhWc69Jslo', // masha - kidding around
+    'https://www.youtube.com/watch?v=RRwfDot-X8k', // fisher price little people Dont Dawdle
+    'https://www.youtube.com/watch?v=Xti4Ke04wNs', // CATBOY SQUARED! | 2.5 HOUR Compilation
+    'https://www.youtube.com/watch?v=dvVvm6nGxTI', // Minnie's Bow-Toons
+    'https://www.youtube.com/watch?v=qbQ9AbnyWBk', // paw patrol s7 compilation
+    'https://www.youtube.com/watch?v=895gMCynrFM', // peppa pig pottery
+    'https://www.youtube.com/watch?v=bm0ShVjk2Bg', // masha - lets play pretend
+    'https://www.youtube.com/watch?v=Gfqdz4dngQY', // masha - bon apetit - 30min
+    'https://www.youtube.com/watch?v=Jbgto_b14cs', // 101 dalmations - Season 1 Ep. 1 - Home is Where the Bark Is
+  ],
+
+  [
+    'https://www.youtube.com/watch?v=Gfqdz4dngQY', // masha bon apetit
+    'https://www.youtube.com/watch?v=hSwF40YgMxg', // masha peace and quiet
+    'https://www.youtube.com/watch?v=5qB43dMxpxc', // pocoyo and nina
+    'https://www.youtube.com/watch?v=raAXwCFcuLk', // masha dance the night away
+    'https://www.youtube.com/watch?v=D5SXp7LeRME', // curious george and invisible sound
+    'https://www.youtube.com/watch?v=WkkgJkNVOGY', // sesame elmo's new band
+    'https://www.youtube.com/watch?v=HA6JvMoWrtY', // random peppa
+    'https://www.youtube.com/watch?v=NDYCjMfTOOQ', // looney tunes full episodes remastered compilation
+    'https://www.youtube.com/watch?v=96SNr0FOydc', // barney terific manners s7
+    'https://www.youtube.com/watch?v=4c--xBAAMEI', // sesame elmo's pretend school
+    'https://www.youtube.com/watch?v=1c3uhrnID-g', // paw patrol
+    'https://www.youtube.com/watch?v=zcM6xhuoQ9g', // nat geo kids Dog Genius | Awesome Animals
+    'https://www.youtube.com/watch?v=G-qXleAe8Aw', // Zoboomafoo with the Kratt Brothers
+    'https://www.youtube.com/watch?v=nU2a3Z-ueMY', // nat geo kids awesome animals wolves
+    'https://www.youtube.com/watch?v=Os-dhh2FeJY', // nat geo kids Kangaroo Kaos
+  ],
+  [
     'https://www.youtube.com/watch?v=MDF8sAnY92Q', // masha girl power
     'https://www.youtube.com/watch?v=XyYYIL3fsVM', // booba 3d cartoons
     'https://www.youtube.com/watch?v=VBKgPmS5Fyw', // mickey disney shorts
