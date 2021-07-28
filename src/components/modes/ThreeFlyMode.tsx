@@ -1,11 +1,7 @@
-import React, { Suspense, useMemo } from 'react'
-import dynamic from 'next/dynamic'
-
+import React, { Suspense } from 'react'
 import * as THREE from 'three'
-import { Html, Stars, Sky, OrbitControls, PerspectiveCamera } from '@react-three/drei' // Sky, Cloud, Stars, OrbitControls
+import { Html, OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Physics, usePlane } from '@react-three/cannon' // useBox, useCylinder
-// import { Physics, usePlane } from 'use-cannon'
 
 import { MetalUFO } from '../models/vehicles/MetalUFO'
 import { CloudSphereOrange } from '../models/scenes/CloudSphereOrange'
@@ -14,11 +10,9 @@ import { PoopEmoji } from '../models/game/PoopEmoji'
 
 import { useControllerStore } from '../../stores/useControllerStore'
 
-// dynamic() is the nextjs way to go for loading most 3D model assets
-
-const CAMERA_FOV = 50
-const CAMERA_Z = -15
-
+/**
+ * Return size of the given `THREE.Object3D` calculated via bounding box.
+ */
 const getBoxSize = (obj?: THREE.Object3D): [number, number, number] | undefined => {
   if (obj) {
     const helper = new THREE.BoxHelper(obj)
@@ -33,6 +27,9 @@ const getBoxSize = (obj?: THREE.Object3D): [number, number, number] | undefined 
   return undefined
 }
 
+/**
+ * Player component that wraps the UFO model and responds to joystick controls.
+ */
 export const PlayerUFO: React.FC = () => {
   const groupRef = React.useRef<THREE.Group>(null)
 
@@ -44,7 +41,7 @@ export const PlayerUFO: React.FC = () => {
 
   const size = React.useMemo(() => getBoxSize(groupRef.current?.children[0]) ?? [0, 0, 0], [groupRef.current])
 
-  useFrame((state, delta) => {
+  useFrame(() => {
     if (!groupRef.current?.position) {
       return
     }
@@ -66,15 +63,18 @@ export const PlayerUFO: React.FC = () => {
     }
   })
 
-  // console.log(groupRef.current?.position) -6.5
-
   return <MetalUFO ref={groupRef} position={[0, 0, 0]} />
 }
 
+const CAMERA_FOV = 50
+const CAMERA_Z = -15
+
+/**
+ * Player controls a flying saucer's movement... Game WIP
+ */
 export const ThreeFlyMode: React.FC<{}> = () => {
   const cameraRef = React.useRef<THREE.PerspectiveCamera>(null)
 
-  // the Player component listens for the keyboard and handles movement
   return (
     <Canvas
       // @ts-expect-error
